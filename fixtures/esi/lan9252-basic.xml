@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<EtherCATInfo>
+  <Vendor>
+    <Id>0x00000a88</Id>
+    <Name>LAN9252 Basic</Name>
+  </Vendor>
+  <Descriptions>
+    <Devices>
+      <Device>
+        <Type>LAN9252 Basic</Type>
+        <Name>LAN9252 Basic</Name>
+        <ProductCode>0x00000001</ProductCode>
+        <RevisionNo>0x00000001</RevisionNo>
+        <ProcessData>
+          <Region Direction="rx" Address="0x1000" RequiredBytes="3" BufferBytes="256"></Region>
+          <Region Direction="tx" Address="0x1100" RequiredBytes="3" BufferBytes="256"></Region>
+        </ProcessData>
+        <Objects>
+          <Object Index="0x6000" SubIndex="0x01" Name="Status Word" Type="uint16" BitLength="16" Access="ro" Pdo="tx" Default="0"></Object>
+          <Object Index="0x6000" SubIndex="0x02" Name="Input Ready" Type="bool" BitLength="1" Access="ro" Pdo="tx" Default="false"></Object>
+          <Object Index="0x7000" SubIndex="0x01" Name="Control Word" Type="uint16" BitLength="16" Access="rw" Pdo="rx" Default="0"></Object>
+          <Object Index="0x7000" SubIndex="0x02" Name="Enable Output" Type="bool" BitLength="1" Access="rw" Pdo="rx" Default="false"></Object>
+        </Objects>
+        <RxPdo Index="0x1600" Name="Outputs">
+          <Entry Index="0x7000" SubIndex="0x01" Name="Control Word" Type="uint16" BitLength="16" BitOffset="0" ByteOffset="0"></Entry>
+          <Entry Index="0x7000" SubIndex="0x02" Name="Enable Output" Type="bool" BitLength="1" BitOffset="16" ByteOffset="2"></Entry>
+        </RxPdo>
+        <TxPdo Index="0x1a00" Name="Inputs">
+          <Entry Index="0x6000" SubIndex="0x01" Name="Status Word" Type="uint16" BitLength="16" BitOffset="0" ByteOffset="0"></Entry>
+          <Entry Index="0x6000" SubIndex="0x02" Name="Input Ready" Type="bool" BitLength="1" BitOffset="16" ByteOffset="2"></Entry>
+        </TxPdo>
+        <SyncManagers>
+          <SyncManager Index="2" Direction="rx" StartAddress="0x1000" Length="256" PdoAssign="0x1c12"></SyncManager>
+          <SyncManager Index="3" Direction="tx" StartAddress="0x1100" Length="256" PdoAssign="0x1c13"></SyncManager>
+        </SyncManagers>
+      </Device>
+    </Devices>
+  </Descriptions>
+</EtherCATInfo>

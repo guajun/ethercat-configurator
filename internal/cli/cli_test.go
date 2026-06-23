@@ -187,6 +187,25 @@ func TestReportWritesOutputFile(t *testing.T) {
 	}
 }
 
+func TestCommandLevelLongOutputFlag(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	outputPath := filepath.Join(t.TempDir(), "device.xml")
+
+	exitCode := Run([]string{"gen", "esi", "../../examples/lan9252-basic/device.yaml", "--output", outputPath}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected exit code %d, got %d stderr=%q", ExitSuccess, exitCode, stderr.String())
+	}
+	data, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("expected output file, got %v", err)
+	}
+	if !strings.Contains(string(data), "<EtherCATInfo>") {
+		t.Fatalf("expected generated XML, got %q", string(data))
+	}
+}
+
 func TestReportMissingFileReturnsDiagnostic(t *testing.T) {
 	var stdout bytes.Buffer
 	var stderr bytes.Buffer
@@ -201,6 +220,90 @@ func TestReportMissingFileReturnsDiagnostic(t *testing.T) {
 	}
 	if !strings.Contains(stderr.String(), diag.CodeConfigParseError) {
 		t.Fatalf("expected parse diagnostic, got %q", stderr.String())
+	}
+}
+
+func TestGenerateArtifactsAndInspect(t *testing.T) {
+	tempDir := t.TempDir()
+	devicePath := "../../examples/lan9252-basic/device.yaml"
+	esiPath := filepath.Join(tempDir, "device.xml")
+	siiPath := filepath.Join(tempDir, "eeprom.bin")
+	headerPath := filepath.Join(tempDir, "ethercat_device.h")
+
+	commands := [][]string{
+		{"gen", "esi", devicePath, "-o", esiPath},
+		{"gen", "sii", devicePath, "-o", siiPath},
+		{"gen", "header", devicePath, "-o", headerPath},
+	}
+	for _, command := range commands {
+		var stdout bytes.Buffer
+		var stderr bytes.Buffer
+		exitCode := Run(command, &stdout, &stderr)
+		if exitCode != ExitSuccess {
+			t.Fatalf("expected %v to succeed with exit code %d, got %d stderr=%q", command, ExitSuccess, exitCode, stderr.String())
+		}
+	}
+
+	esiData, err := os.ReadFile(esiPath)
+	if err != nil {
+		t.Fatalf("expected ESI file, got %v", err)
+	}
+	if !strings.Contains(string(esiData), "<EtherCATInfo>") || !strings.Contains(string(esiData), `StartAddress="0x1000"`) {
+		t.Fatalf("expected generated ESI XML, got %q", string(esiData))
+	}
+	headerData, err := os.ReadFile(headerPath)
+	if err != nil {
+		t.Fatalf("expected header file, got %v", err)
+	}
+	if !strings.Contains(string(headerData), "LAN9252_BASIC_RX_CONTROL_WORD_BYTE_OFFSET") {
+		t.Fatalf("expected generated header constants, got %q", string(headerData))
+	}
+
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	if exitCode := Run([]string{"inspect", "esi", esiPath}, &stdout, &stderr); exitCode != ExitSuccess {
+		t.Fatalf("expected inspect esi success, got %d stderr=%q", exitCode, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), "ESI LAN9252 Basic") {
+		t.Fatalf("expected ESI summary, got %q", stdout.String())
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	if exitCode := Run([]string{"--json", "inspect", "sii", siiPath}, &stdout, &stderr); exitCode != ExitSuccess {
+		t.Fatalf("expected inspect sii success, got %d stderr=%q", exitCode, stderr.String())
+	}
+	if !strings.Contains(stdout.String(), `"vendor_id":"0x00000a88"`) || !strings.Contains(stdout.String(), `"process_data"`) {
+		t.Fatalf("expected SII JSON summary, got %q", stdout.String())
+	}
+}
+
+func TestInspectSIIChecksumDiagnostic(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	tempDir := t.TempDir()
+	devicePath := "../../examples/lan9252-basic/device.yaml"
+	siiPath := filepath.Join(tempDir, "eeprom.bin")
+
+	if exitCode := Run([]string{"gen", "sii", devicePath, "-o", siiPath}, &stdout, &stderr); exitCode != ExitSuccess {
+		t.Fatalf("expected gen sii success, got %d stderr=%q", exitCode, stderr.String())
+	}
+	data, err := os.ReadFile(siiPath)
+	if err != nil {
+		t.Fatalf("expected SII file, got %v", err)
+	}
+	data[12] ^= 0xff
+	if err := os.WriteFile(siiPath, data, 0o644); err != nil {
+		t.Fatalf("expected to corrupt SII file, got %v", err)
+	}
+
+	stdout.Reset()
+	stderr.Reset()
+	if exitCode := Run([]string{"--json", "inspect", "sii", siiPath}, &stdout, &stderr); exitCode != ExitValidationError {
+		t.Fatalf("expected checksum validation error, got %d", exitCode)
+	}
+	if !strings.Contains(stderr.String(), "SII_CHECKSUM_INVALID") {
+		t.Fatalf("expected checksum diagnostic, got %q", stderr.String())
 	}
 }
 

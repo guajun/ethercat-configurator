@@ -8,8 +8,12 @@ import (
 
 	"github.com/guajun/ethercat-configurator/internal/config"
 	"github.com/guajun/ethercat-configurator/internal/diag"
+	"github.com/guajun/ethercat-configurator/internal/esi"
+	"github.com/guajun/ethercat-configurator/internal/firmware"
+	"github.com/guajun/ethercat-configurator/internal/model"
 	"github.com/guajun/ethercat-configurator/internal/pdo"
 	"github.com/guajun/ethercat-configurator/internal/report"
+	"github.com/guajun/ethercat-configurator/internal/sii"
 )
 
 const Version = "ethercat-configurator dev"
@@ -66,6 +70,7 @@ func Run(args []string, stdout io.Writer, stderr io.Writer) int {
 func parseGlobal(args []string) (runOptions, []string, *cliError) {
 	var options runOptions
 	remaining := make([]string, 0, len(args))
+	commandSeen := false
 
 	for _, arg := range args {
 		switch arg {
@@ -78,8 +83,11 @@ func parseGlobal(args []string) (runOptions, []string, *cliError) {
 		case "--help", "-h":
 			options.Help = true
 		default:
-			if strings.HasPrefix(arg, "--") {
+			if strings.HasPrefix(arg, "--") && !commandSeen {
 				return options, remaining, inputError("ECONFIG_INPUT_UNKNOWN_FLAG", fmt.Sprintf("unknown flag %q", arg))
+			}
+			if !strings.HasPrefix(arg, "-") {
+				commandSeen = true
 			}
 			remaining = append(remaining, arg)
 		}
@@ -183,14 +191,12 @@ func runGen(args []string, options runOptions, stdout io.Writer) *cliError {
 	}
 
 	switch args[0] {
-	case "esi", "sii", "header":
-		if len(args) == 1 {
-			return inputError("ECONFIG_INPUT_MISSING_ARGUMENT", fmt.Sprintf("gen %s requires a device file", args[0]))
-		}
-		if !options.Quiet {
-			writeResult(stdout, options, "gen "+args[0], args[1])
-		}
-		return nil
+	case "esi":
+		return runGenESI(args[1:], options, stdout)
+	case "sii":
+		return runGenSII(args[1:], options, stdout)
+	case "header":
+		return runGenHeader(args[1:], options, stdout)
 	default:
 		return inputError("ECONFIG_INPUT_UNKNOWN_COMMAND", fmt.Sprintf("unknown gen artifact %q", args[0]))
 	}
@@ -202,17 +208,129 @@ func runInspect(args []string, options runOptions, stdout io.Writer) *cliError {
 	}
 
 	switch args[0] {
-	case "esi", "sii":
-		if len(args) == 1 {
-			return inputError("ECONFIG_INPUT_MISSING_ARGUMENT", fmt.Sprintf("inspect %s requires an artifact file", args[0]))
-		}
-		if !options.Quiet {
-			writeResult(stdout, options, "inspect "+args[0], args[1])
-		}
-		return nil
+	case "esi":
+		return runInspectESI(args[1:], options, stdout)
+	case "sii":
+		return runInspectSII(args[1:], options, stdout)
 	default:
 		return inputError("ECONFIG_INPUT_UNKNOWN_COMMAND", fmt.Sprintf("unknown inspect artifact %q", args[0]))
 	}
+}
+
+func runGenESI(args []string, options runOptions, stdout io.Writer) *cliError {
+	target, outputPath, err := parseOutputArgs(args, "gen esi", "device file")
+	if err != nil {
+		return err
+	}
+	device, layout, addressMap, diagnostics := loadValidatedDevice(target)
+	if len(diagnostics) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	data, generateErr := esi.Generate(device, layout, addressMap)
+	if generateErr != nil {
+		return internalError("ECONFIG_INTERNAL_ESI_GENERATE", generateErr.Error())
+	}
+	if writeErr := os.WriteFile(outputPath, data, 0o644); writeErr != nil {
+		return internalError("ECONFIG_INTERNAL_ESI_WRITE", writeErr.Error())
+	}
+	if !options.Quiet {
+		writeResult(stdout, options, "gen esi", target)
+	}
+	return nil
+}
+
+func runGenSII(args []string, options runOptions, stdout io.Writer) *cliError {
+	target, outputPath, err := parseOutputArgs(args, "gen sii", "device file")
+	if err != nil {
+		return err
+	}
+	device, layout, addressMap, diagnostics := loadValidatedDevice(target)
+	if len(diagnostics) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	data, generateErr := sii.Generate(device, layout, addressMap)
+	if generateErr != nil {
+		return internalError("ECONFIG_INTERNAL_SII_GENERATE", generateErr.Error())
+	}
+	if writeErr := os.WriteFile(outputPath, data, 0o644); writeErr != nil {
+		return internalError("ECONFIG_INTERNAL_SII_WRITE", writeErr.Error())
+	}
+	if !options.Quiet {
+		writeResult(stdout, options, "gen sii", target)
+	}
+	return nil
+}
+
+func runGenHeader(args []string, options runOptions, stdout io.Writer) *cliError {
+	target, outputPath, err := parseOutputArgs(args, "gen header", "device file")
+	if err != nil {
+		return err
+	}
+	device, layout, addressMap, diagnostics := loadValidatedDevice(target)
+	if len(diagnostics) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	data, generateErr := firmware.GenerateHeader(device, layout, addressMap)
+	if generateErr != nil {
+		return internalError("ECONFIG_INTERNAL_HEADER_GENERATE", generateErr.Error())
+	}
+	if writeErr := os.WriteFile(outputPath, data, 0o644); writeErr != nil {
+		return internalError("ECONFIG_INTERNAL_HEADER_WRITE", writeErr.Error())
+	}
+	if !options.Quiet {
+		writeResult(stdout, options, "gen header", target)
+	}
+	return nil
+}
+
+func runInspectESI(args []string, options runOptions, stdout io.Writer) *cliError {
+	target, err := parseInspectArgs(args, "inspect esi")
+	if err != nil {
+		return err
+	}
+	data, readErr := os.ReadFile(target)
+	if readErr != nil {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diag.Error(diag.CodeESIParseError, readErr.Error())}
+	}
+	summary, diagnostics := esi.Parse(data)
+	if len(diagnostics) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	if options.JSON {
+		if renderErr := esi.RenderJSON(stdout, summary); renderErr != nil {
+			return internalError("ECONFIG_INTERNAL_ESI_RENDER", renderErr.Error())
+		}
+	} else if !options.Quiet {
+		if renderErr := esi.RenderText(stdout, summary); renderErr != nil {
+			return internalError("ECONFIG_INTERNAL_ESI_RENDER", renderErr.Error())
+		}
+	}
+	return nil
+}
+
+func runInspectSII(args []string, options runOptions, stdout io.Writer) *cliError {
+	target, err := parseInspectArgs(args, "inspect sii")
+	if err != nil {
+		return err
+	}
+	data, readErr := os.ReadFile(target)
+	if readErr != nil {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diag.Error(diag.CodeSIIParseError, readErr.Error())}
+	}
+	summary, diagnostics := sii.Parse(data)
+	if len(diagnostics) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	if options.JSON {
+		if renderErr := sii.RenderJSON(stdout, summary); renderErr != nil {
+			return internalError("ECONFIG_INTERNAL_SII_RENDER", renderErr.Error())
+		}
+	} else if !options.Quiet {
+		if renderErr := sii.RenderText(stdout, summary); renderErr != nil {
+			return internalError("ECONFIG_INTERNAL_SII_RENDER", renderErr.Error())
+		}
+	}
+	return nil
 }
 
 func runReport(args []string, options runOptions, stdout io.Writer) *cliError {
@@ -284,6 +402,63 @@ func parseReportArgs(args []string) (string, string, *cliError) {
 		return "", "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", "report requires a device file")
 	}
 	return target, outputPath, nil
+}
+
+func parseOutputArgs(args []string, command string, targetLabel string) (string, string, *cliError) {
+	target := ""
+	outputPath := ""
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "-o", "--output":
+			if index+1 >= len(args) {
+				return "", "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", command+" output flag requires a path")
+			}
+			index++
+			outputPath = args[index]
+		default:
+			if strings.HasPrefix(arg, "-") {
+				return "", "", inputError("ECONFIG_INPUT_UNKNOWN_FLAG", fmt.Sprintf("unknown %s flag %q", command, arg))
+			}
+			if target != "" {
+				return "", "", inputError("ECONFIG_INPUT_TOO_MANY_ARGUMENTS", command+" accepts exactly one "+targetLabel)
+			}
+			target = arg
+		}
+	}
+	if target == "" {
+		return "", "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", command+" requires a "+targetLabel)
+	}
+	if outputPath == "" {
+		return "", "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", command+" requires -o <path>")
+	}
+	return target, outputPath, nil
+}
+
+func parseInspectArgs(args []string, command string) (string, *cliError) {
+	if len(args) == 0 {
+		return "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", command+" requires an artifact file")
+	}
+	if len(args) > 1 {
+		return "", inputError("ECONFIG_INPUT_TOO_MANY_ARGUMENTS", command+" accepts exactly one artifact file")
+	}
+	if strings.HasPrefix(args[0], "-") {
+		return "", inputError("ECONFIG_INPUT_UNKNOWN_FLAG", fmt.Sprintf("unknown %s flag %q", command, args[0]))
+	}
+	return args[0], nil
+}
+
+func loadValidatedDevice(path string) (model.Device, model.Layout, model.AddressMap, []diag.Diagnostic) {
+	loadResult := config.LoadFile(path)
+	diagnostics := append([]diag.Diagnostic(nil), loadResult.Diagnostics...)
+	if hasDiagnostic(diagnostics, diag.CodeConfigParseError) {
+		return loadResult.Device, model.Layout{}, model.AddressMap{}, diagnostics
+	}
+	layout, layoutDiagnostics := pdo.BuildLayout(loadResult.Device)
+	diagnostics = append(diagnostics, layoutDiagnostics...)
+	addressMap, addressDiagnostics := pdo.BuildAddressMap(loadResult.Device, layout)
+	diagnostics = append(diagnostics, addressDiagnostics...)
+	return loadResult.Device, layout, addressMap, diagnostics
 }
 
 func hasDiagnostic(diagnostics []diag.Diagnostic, code string) bool {
