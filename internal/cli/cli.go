@@ -17,9 +17,9 @@ const (
 )
 
 type diagnostic struct {
-	Code    string `json:"code"`
+	Code     string `json:"code"`
 	Severity string `json:"severity"`
-	Message string `json:"message"`
+	Message  string `json:"message"`
 }
 
 type runOptions struct {
@@ -228,9 +228,9 @@ func inputError(code string, message string) *cliError {
 	return &cliError{
 		exitCode: ExitInputError,
 		diagnostic: diagnostic{
-			Code:    code,
+			Code:     code,
 			Severity: "error",
-			Message: message,
+			Message:  message,
 		},
 	}
 }
