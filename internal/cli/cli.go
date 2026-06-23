@@ -3,11 +3,13 @@ package cli
 import (
 	"fmt"
 	"io"
+	"os"
 	"strings"
 
 	"github.com/guajun/ethercat-configurator/internal/config"
 	"github.com/guajun/ethercat-configurator/internal/diag"
 	"github.com/guajun/ethercat-configurator/internal/pdo"
+	"github.com/guajun/ethercat-configurator/internal/report"
 )
 
 const Version = "ethercat-configurator dev"
@@ -67,7 +69,7 @@ func parseGlobal(args []string) (runOptions, []string, *cliError) {
 
 	for _, arg := range args {
 		switch arg {
-		case "--json":
+		case "--json", "-json":
 			options.JSON = true
 		case "--quiet":
 			options.Quiet = true
@@ -217,10 +219,80 @@ func runReport(args []string, options runOptions, stdout io.Writer) *cliError {
 	if len(args) == 0 {
 		return inputError("ECONFIG_INPUT_MISSING_ARGUMENT", "report requires a device file")
 	}
-	if !options.Quiet {
-		writeResult(stdout, options, "report", args[0])
+	target, outputPath, err := parseReportArgs(args)
+	if err != nil {
+		return err
 	}
+
+	loadResult := config.LoadFile(target)
+	diagnostics := append([]diag.Diagnostic(nil), loadResult.Diagnostics...)
+	if hasDiagnostic(diagnostics, diag.CodeConfigParseError) {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	layout, layoutDiagnostics := pdo.BuildLayout(loadResult.Device)
+	diagnostics = append(diagnostics, layoutDiagnostics...)
+	addressMap, addressDiagnostics := pdo.BuildAddressMap(loadResult.Device, layout)
+	diagnostics = append(diagnostics, addressDiagnostics...)
+	reportData := report.Build(target, loadResult.Device, layout, addressMap, diagnostics)
+
+	var output strings.Builder
+	if options.JSON {
+		if renderErr := report.RenderJSON(&output, reportData); renderErr != nil {
+			return internalError("ECONFIG_INTERNAL_REPORT_RENDER", renderErr.Error())
+		}
+	} else if renderErr := report.RenderMarkdown(&output, reportData); renderErr != nil {
+		return internalError("ECONFIG_INTERNAL_REPORT_RENDER", renderErr.Error())
+	}
+
+	if outputPath != "" {
+		if writeErr := os.WriteFile(outputPath, []byte(output.String()), 0o644); writeErr != nil {
+			return internalError("ECONFIG_INTERNAL_REPORT_WRITE", writeErr.Error())
+		}
+		if !options.Quiet {
+			fmt.Fprintf(stdout, "report %s: ok\n", target)
+		}
+		return nil
+	}
+
+	_, _ = io.WriteString(stdout, output.String())
 	return nil
+}
+
+func parseReportArgs(args []string) (string, string, *cliError) {
+	target := ""
+	outputPath := ""
+	for index := 0; index < len(args); index++ {
+		arg := args[index]
+		switch arg {
+		case "-o", "--output":
+			if index+1 >= len(args) {
+				return "", "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", "report output flag requires a path")
+			}
+			index++
+			outputPath = args[index]
+		default:
+			if strings.HasPrefix(arg, "-") {
+				return "", "", inputError("ECONFIG_INPUT_UNKNOWN_FLAG", fmt.Sprintf("unknown report flag %q", arg))
+			}
+			if target != "" {
+				return "", "", inputError("ECONFIG_INPUT_TOO_MANY_ARGUMENTS", "report accepts exactly one device file")
+			}
+			target = arg
+		}
+	}
+	if target == "" {
+		return "", "", inputError("ECONFIG_INPUT_MISSING_ARGUMENT", "report requires a device file")
+	}
+	return target, outputPath, nil
+}
+
+func hasDiagnostic(diagnostics []diag.Diagnostic, code string) bool {
+	for _, diagnostic := range diagnostics {
+		if diagnostic.Code == code {
+			return true
+		}
+	}
+	return false
 }
 
 func writeResult(stdout io.Writer, options runOptions, command string, target string) {
@@ -254,6 +326,13 @@ func writeError(stderr io.Writer, options runOptions, err *cliError) int {
 func inputError(code string, message string) *cliError {
 	return &cliError{
 		exitCode:   ExitInputError,
+		diagnostic: diag.Error(code, message),
+	}
+}
+
+func internalError(code string, message string) *cliError {
+	return &cliError{
+		exitCode:   ExitInternalError,
 		diagnostic: diag.Error(code, message),
 	}
 }
