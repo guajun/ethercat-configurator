@@ -4,6 +4,8 @@ import (
 	"bytes"
 	"strings"
 	"testing"
+
+	"github.com/guajun/ethercat-configurator/internal/diag"
 )
 
 func TestVersionOutput(t *testing.T) {
@@ -66,10 +68,27 @@ func TestUnknownCommandJSONDiagnostic(t *testing.T) {
 	if stdout.Len() != 0 {
 		t.Fatalf("expected empty stdout, got %q", stdout.String())
 	}
-	for _, want := range []string{"\"diagnostics\"", "\"ECONFIG_INPUT_UNKNOWN_COMMAND\"", "\"severity\":\"error\""} {
-		if !strings.Contains(stderr.String(), want) {
-			t.Fatalf("expected JSON diagnostic to contain %q, got %q", want, stderr.String())
-		}
+	want := "{\"status\":\"error\",\"diagnostics\":[{\"code\":\"ECONFIG_INPUT_UNKNOWN_COMMAND\",\"severity\":\"error\",\"message\":\"unknown command \\\"unknown\\\"\"}]}\n"
+	if stderr.String() != want {
+		t.Fatalf("expected JSON diagnostic %q, got %q", want, stderr.String())
+	}
+}
+
+func TestValidateJSONOutput(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{"--json", "validate", "specs"}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected exit code %d, got %d", ExitSuccess, exitCode)
+	}
+	want := "{\"status\":\"ok\",\"target\":\"specs\",\"diagnostics\":[]}\n"
+	if stdout.String() != want {
+		t.Fatalf("expected stable validate JSON %q, got %q", want, stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
 	}
 }
 
@@ -80,8 +99,8 @@ func TestExitCodeMapping(t *testing.T) {
 		want int
 	}{
 		{name: "input", err: inputError("ECONFIG_INPUT_TEST", "input failed"), want: ExitInputError},
-		{name: "validation", err: &cliError{exitCode: ExitValidationError, diagnostic: diagnostic{Code: "ECONFIG_VALIDATION_TEST", Severity: "error", Message: "validation failed"}}, want: ExitValidationError},
-		{name: "internal", err: &cliError{exitCode: ExitInternalError, diagnostic: diagnostic{Code: "ECONFIG_INTERNAL_TEST", Severity: "error", Message: "internal failed"}}, want: ExitInternalError},
+		{name: "validation", err: &cliError{exitCode: ExitValidationError, diagnostic: diag.Error("ECONFIG_VALIDATION_TEST", "validation failed")}, want: ExitValidationError},
+		{name: "internal", err: &cliError{exitCode: ExitInternalError, diagnostic: diag.Error("ECONFIG_INTERNAL_TEST", "internal failed")}, want: ExitInternalError},
 	}
 
 	for _, test := range tests {

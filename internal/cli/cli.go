@@ -1,10 +1,11 @@
 package cli
 
 import (
-	"encoding/json"
 	"fmt"
 	"io"
 	"strings"
+
+	"github.com/guajun/ethercat-configurator/internal/diag"
 )
 
 const Version = "ethercat-configurator dev"
@@ -16,12 +17,6 @@ const (
 	ExitInternalError   = 70
 )
 
-type diagnostic struct {
-	Code     string `json:"code"`
-	Severity string `json:"severity"`
-	Message  string `json:"message"`
-}
-
 type runOptions struct {
 	JSON    bool
 	Quiet   bool
@@ -31,7 +26,7 @@ type runOptions struct {
 
 type cliError struct {
 	exitCode   int
-	diagnostic diagnostic
+	diagnostic diag.Diagnostic
 }
 
 func (err cliError) Error() string {
@@ -144,9 +139,18 @@ func runValidate(args []string, options runOptions, stdout io.Writer) *cliError 
 		return inputError("ECONFIG_INPUT_TOO_MANY_ARGUMENTS", "validate accepts exactly one target")
 	}
 	if !options.Quiet {
-		writeResult(stdout, options, "validate", args[0])
+		writeValidateResult(stdout, options, args[0])
 	}
 	return nil
+}
+
+func writeValidateResult(stdout io.Writer, options runOptions, target string) {
+	if options.JSON {
+		_ = diag.RenderJSON(stdout, diag.Result{Status: "ok", Target: target, Diagnostics: nil})
+		return
+	}
+
+	fmt.Fprintf(stdout, "validate %s: ok\n", target)
 }
 
 func runGen(args []string, options runOptions, stdout io.Writer) *cliError {
@@ -204,7 +208,7 @@ func writeResult(stdout io.Writer, options runOptions, command string, target st
 			Target  string `json:"target"`
 			Status  string `json:"status"`
 		}{Command: command, Target: target, Status: "ok"}
-		_ = json.NewEncoder(stdout).Encode(result)
+		_ = diag.RenderJSON(stdout, diag.Result{Status: result.Status, Target: result.Target, Diagnostics: nil})
 		return
 	}
 
@@ -213,12 +217,9 @@ func writeResult(stdout io.Writer, options runOptions, command string, target st
 
 func writeError(stderr io.Writer, options runOptions, err *cliError) int {
 	if options.JSON {
-		payload := struct {
-			Diagnostics []diagnostic `json:"diagnostics"`
-		}{Diagnostics: []diagnostic{err.diagnostic}}
-		_ = json.NewEncoder(stderr).Encode(payload)
+		_ = diag.RenderJSON(stderr, diag.Result{Status: "error", Diagnostics: []diag.Diagnostic{err.diagnostic}})
 	} else if !options.Quiet {
-		fmt.Fprintf(stderr, "%s: %s\n", err.diagnostic.Code, err.diagnostic.Message)
+		_ = diag.RenderText(stderr, []diag.Diagnostic{err.diagnostic})
 	}
 
 	return err.exitCode
@@ -226,12 +227,8 @@ func writeError(stderr io.Writer, options runOptions, err *cliError) int {
 
 func inputError(code string, message string) *cliError {
 	return &cliError{
-		exitCode: ExitInputError,
-		diagnostic: diagnostic{
-			Code:     code,
-			Severity: "error",
-			Message:  message,
-		},
+		exitCode:   ExitInputError,
+		diagnostic: diag.Error(code, message),
 	}
 }
 
