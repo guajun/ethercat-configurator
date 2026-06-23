@@ -1,0 +1,39 @@
+identity:
+  vendor_id: 0x00000a88
+  product_code: 0x00000003
+  revision: 0x00000001
+  name: Invalid Layout
+object_dictionary:
+  - index: 0x7000
+    subindex: 1
+    name: Output
+    type: uint16
+    access: rw
+    pdo: rx
+  - index: 0x6000
+    subindex: 1
+    name: Input
+    type: uint16
+    access: ro
+    pdo: tx
+  - index: 0x7000
+    subindex: 2
+    name: Odd Width
+    type: bit
+    bit_length: 3
+    access: rw
+    pdo: rx
+pdos:
+  rx:
+    - index: 0x1600
+      entries:
+        - index: 0x7000
+          subindex: 1
+        - index: 0x7000
+          subindex: 1
+        - index: 0x6000
+          subindex: 1
+        - index: 0x7000
+          subindex: 2
+        - index: 0x7001
+          subindex: 1

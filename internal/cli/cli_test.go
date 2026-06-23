@@ -92,6 +92,40 @@ func TestValidateJSONOutput(t *testing.T) {
 	}
 }
 
+func TestValidateDeviceFixture(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{"validate", "../../examples/lan9252-basic/device.yaml"}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected exit code %d, got %d", ExitSuccess, exitCode)
+	}
+	if got := strings.TrimSpace(stdout.String()); got != "validate ../../examples/lan9252-basic/device.yaml: ok" {
+		t.Fatalf("expected device validation success, got %q", got)
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
+	}
+}
+
+func TestValidateDeviceJSONDiagnostics(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{"--json", "validate", "../../fixtures/pdi/default-too-small.yaml"}, &stdout, &stderr)
+
+	if exitCode != ExitValidationError {
+		t.Fatalf("expected exit code %d, got %d", ExitValidationError, exitCode)
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected empty stdout, got %q", stdout.String())
+	}
+	if !strings.Contains(stderr.String(), diag.CodePDIBufferTooSmall) || !strings.Contains(stderr.String(), diag.CodePDILayoutOutOfRange) {
+		t.Fatalf("expected PDI diagnostics, got %q", stderr.String())
+	}
+}
+
 func TestExitCodeMapping(t *testing.T) {
 	tests := []struct {
 		name string

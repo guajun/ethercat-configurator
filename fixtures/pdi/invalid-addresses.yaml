@@ -1,0 +1,36 @@
+identity:
+  vendor_id: 0x00000a88
+  product_code: 0x00000006
+  revision: 0x00000001
+  name: Invalid Addresses
+process_data:
+  rx:
+    address: 0x10f3
+    size: 64
+  tx:
+    address: 0x1100
+    size: 4096
+object_dictionary:
+  - index: 0x7000
+    subindex: 1
+    name: Output
+    type: uint16
+    access: rw
+    pdo: rx
+  - index: 0x6000
+    subindex: 1
+    name: Input
+    type: uint16
+    access: ro
+    pdo: tx
+pdos:
+  rx:
+    - index: 0x1600
+      entries:
+        - index: 0x7000
+          subindex: 1
+  tx:
+    - index: 0x1a00
+      entries:
+        - index: 0x6000
+          subindex: 1

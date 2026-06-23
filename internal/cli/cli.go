@@ -5,7 +5,9 @@ import (
 	"io"
 	"strings"
 
+	"github.com/guajun/ethercat-configurator/internal/config"
 	"github.com/guajun/ethercat-configurator/internal/diag"
+	"github.com/guajun/ethercat-configurator/internal/pdo"
 )
 
 const Version = "ethercat-configurator dev"
@@ -25,8 +27,9 @@ type runOptions struct {
 }
 
 type cliError struct {
-	exitCode   int
-	diagnostic diag.Diagnostic
+	exitCode    int
+	diagnostic  diag.Diagnostic
+	diagnostics []diag.Diagnostic
 }
 
 func (err cliError) Error() string {
@@ -138,8 +141,27 @@ func runValidate(args []string, options runOptions, stdout io.Writer) *cliError 
 	if len(args) > 1 {
 		return inputError("ECONFIG_INPUT_TOO_MANY_ARGUMENTS", "validate accepts exactly one target")
 	}
+	if args[0] != "specs" {
+		return validateDevice(args[0], options, stdout)
+	}
 	if !options.Quiet {
 		writeValidateResult(stdout, options, args[0])
+	}
+	return nil
+}
+
+func validateDevice(path string, options runOptions, stdout io.Writer) *cliError {
+	loadResult := config.LoadFile(path)
+	diagnostics := append([]diag.Diagnostic(nil), loadResult.Diagnostics...)
+	layout, layoutDiagnostics := pdo.BuildLayout(loadResult.Device)
+	diagnostics = append(diagnostics, layoutDiagnostics...)
+	_, addressDiagnostics := pdo.BuildAddressMap(loadResult.Device, layout)
+	diagnostics = append(diagnostics, addressDiagnostics...)
+	if len(diagnostics) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	}
+	if !options.Quiet {
+		writeValidateResult(stdout, options, path)
 	}
 	return nil
 }
@@ -216,10 +238,14 @@ func writeResult(stdout io.Writer, options runOptions, command string, target st
 }
 
 func writeError(stderr io.Writer, options runOptions, err *cliError) int {
+	diagnostics := err.diagnostics
+	if len(diagnostics) == 0 {
+		diagnostics = []diag.Diagnostic{err.diagnostic}
+	}
 	if options.JSON {
-		_ = diag.RenderJSON(stderr, diag.Result{Status: "error", Diagnostics: []diag.Diagnostic{err.diagnostic}})
+		_ = diag.RenderJSON(stderr, diag.Result{Status: "error", Diagnostics: diagnostics})
 	} else if !options.Quiet {
-		_ = diag.RenderText(stderr, []diag.Diagnostic{err.diagnostic})
+		_ = diag.RenderText(stderr, diagnostics)
 	}
 
 	return err.exitCode
