@@ -23,6 +23,9 @@ const (
 	CodePDIRegionOverlap     = "PDI_REGION_OVERLAP"
 	CodePDIBufferTooSmall    = "PDI_BUFFER_TOO_SMALL"
 	CodePDILayoutOutOfRange  = "PDI_LAYOUT_OUT_OF_RANGE"
+	CodeESIParseError        = "ESI_PARSE_ERROR"
+	CodeSIIParseError        = "SII_PARSE_ERROR"
+	CodeSIIChecksumInvalid   = "SII_CHECKSUM_INVALID"
 )
 
 type Severity string

@@ -31,7 +31,7 @@ This project is not intended to replace existing EtherCAT runtime stacks or engi
 | IgH EtherCAT Master | Mature Linux master and diagnostics | Linux validation reference and CLI inspiration |
 | ET9000 / TwinCAT / vendor tools | Compatibility, import, commissioning, and production engineering | Generated artifacts should remain importable, but daily generation should not depend on GUI-only workflows |
 
-## Planned CLI
+## CLI
 
 ```bash
 ethercat-configurator --help
@@ -47,6 +47,13 @@ ethercat-configurator inspect sii eeprom.bin
 ethercat-configurator diff expected.yaml actual.xml
 ```
 
+Generated artifacts are deterministic and come from the same canonical model:
+
+- `gen esi` writes a minimal ESI XML file with identity, Object Dictionary, PDO mappings, process data addresses, and Sync Manager metadata.
+- `gen sii` writes a stable EEPROM binary container with identity, strings, Object Dictionary, PDO mappings, process data addresses, and checksum validation.
+- `gen header` writes C/C++ constants, process data buffers, bit masks, byte offsets, and static assertions for firmware.
+- `inspect esi` and `inspect sii` print normalized summaries; pass `--json` for machine-readable output.
+
 ## Current Status
 
-This repository is in the planning stage. See [PLAN.md](PLAN.md) for the roadmap and issue index. Detailed implementation scope and acceptance criteria live in GitHub Issues.
+The CLI foundation, YAML model loading, PDO layout, process data address validation, reports, ESI XML generation, SII EEPROM generation, and firmware header generation are implemented. See [PLAN.md](PLAN.md) for the roadmap and issue index. Detailed implementation scope and acceptance criteria live in GitHub Issues.
