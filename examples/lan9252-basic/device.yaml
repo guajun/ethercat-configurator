@@ -1,0 +1,56 @@
+identity:
+  vendor_id: 0x00000a88
+  product_code: 0x00000001
+  revision: 0x00000001
+  name: LAN9252 Basic
+process_data:
+  rx:
+    size: 256
+  tx:
+    size: 256
+object_dictionary:
+  - index: 0x7000
+    subindex: 1
+    name: Control Word
+    type: uint16
+    access: rw
+    pdo: rx
+    default: "0"
+  - index: 0x7000
+    subindex: 2
+    name: Enable Output
+    type: bool
+    access: rw
+    pdo: rx
+    default: "false"
+  - index: 0x6000
+    subindex: 1
+    name: Status Word
+    type: uint16
+    access: ro
+    pdo: tx
+    default: "0"
+  - index: 0x6000
+    subindex: 2
+    name: Input Ready
+    type: bool
+    access: ro
+    pdo: tx
+    default: "false"
+pdos:
+  rx:
+    - index: 0x1600
+      name: Outputs
+      entries:
+        - index: 0x7000
+          subindex: 1
+        - index: 0x7000
+          subindex: 2
+  tx:
+    - index: 0x1a00
+      name: Inputs
+      entries:
+        - index: 0x6000
+          subindex: 1
+        - index: 0x6000
+          subindex: 2

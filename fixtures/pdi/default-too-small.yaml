@@ -1,0 +1,31 @@
+identity:
+  vendor_id: 0x00000a88
+  product_code: 0x00000004
+  revision: 0x00000001
+  name: Default Too Small
+object_dictionary:
+  - index: 0x7000
+    subindex: 1
+    name: Large Output
+    type: bit
+    bit_length: 4096
+    access: rw
+    pdo: rx
+  - index: 0x6000
+    subindex: 1
+    name: Large Input
+    type: bit
+    bit_length: 4096
+    access: ro
+    pdo: tx
+pdos:
+  rx:
+    - index: 0x1600
+      entries:
+        - index: 0x7000
+          subindex: 1
+  tx:
+    - index: 0x1a00
+      entries:
+        - index: 0x6000
+          subindex: 1

@@ -1,0 +1,30 @@
+identity:
+  vendor_id: 0x00000a88
+  product_code: 0x00000001
+  revision: 0x00000001
+  name: Bad Device
+object_dictionary:
+  - index: 0x0001
+    subindex: 1
+    name: Bad Index
+    type: uint16
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 1
+    name: First Duplicate
+    type: uint16
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 1
+    name: Second Duplicate
+    type: float24
+    access: bad
+    pdo: rx
+pdos:
+  rx:
+    - index: 0x1600
+      entries:
+        - index: 0x7000
+          subindex: 1

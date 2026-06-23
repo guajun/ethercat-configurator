@@ -1,0 +1,35 @@
+identity:
+  vendor_id: 0x00000a88
+  product_code: 0x00000002
+  revision: 0x00000001
+  name: Packed Bits
+object_dictionary:
+  - index: 0x7000
+    subindex: 1
+    name: Flag A
+    type: bool
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 2
+    name: Flag B
+    type: bool
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 3
+    name: Nibble
+    type: bit
+    bit_length: 4
+    access: rw
+    pdo: rx
+pdos:
+  rx:
+    - index: 0x1600
+      entries:
+        - index: 0x7000
+          subindex: 1
+        - index: 0x7000
+          subindex: 2
+        - index: 0x7000
+          subindex: 3

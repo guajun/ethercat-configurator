@@ -9,12 +9,20 @@ import (
 )
 
 const (
-	CodeConfigParseError  = "CONFIG_PARSE_ERROR"
-	CodeODDuplicateIndex  = "OD_DUPLICATE_INDEX"
-	CodeODInvalidType     = "OD_INVALID_TYPE"
-	CodePDOEntryNotFound  = "PDO_ENTRY_NOT_FOUND"
-	CodePDOSizeOverflow   = "PDO_SIZE_OVERFLOW"
-	CodePDIBufferTooSmall = "PDI_BUFFER_TOO_SMALL"
+	CodeConfigParseError     = "CONFIG_PARSE_ERROR"
+	CodeODDuplicateIndex     = "OD_DUPLICATE_INDEX"
+	CodeODInvalidIndex       = "OD_INVALID_INDEX"
+	CodeODInvalidType        = "OD_INVALID_TYPE"
+	CodeODInvalidAccess      = "OD_INVALID_ACCESS"
+	CodePDOEntryNotFound     = "PDO_ENTRY_NOT_FOUND"
+	CodePDODuplicateMapping  = "PDO_DUPLICATE_MAPPING"
+	CodePDODirectionMismatch = "PDO_DIRECTION_MISMATCH"
+	CodePDOUnsupportedWidth  = "PDO_UNSUPPORTED_WIDTH"
+	CodePDOSizeOverflow      = "PDO_SIZE_OVERFLOW"
+	CodePDIAddressInvalid    = "PDI_ADDRESS_INVALID"
+	CodePDIRegionOverlap     = "PDI_REGION_OVERLAP"
+	CodePDIBufferTooSmall    = "PDI_BUFFER_TOO_SMALL"
+	CodePDILayoutOutOfRange  = "PDI_LAYOUT_OUT_OF_RANGE"
 )
 
 type Severity string

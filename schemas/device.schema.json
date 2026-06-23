@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/guajun/ethercat-configurator/schemas/device.schema.json",
+  "title": "EtherCAT Configurator Device",
+  "type": "object",
+  "required": ["identity", "object_dictionary", "pdos"],
+  "additionalProperties": false,
+  "properties": {
+    "identity": {
+      "type": "object",
+      "required": ["vendor_id", "product_code", "revision", "name"],
+      "additionalProperties": false,
+      "properties": {
+        "vendor_id": { "$ref": "#/$defs/u32" },
+        "product_code": { "$ref": "#/$defs/u32" },
+        "revision": { "$ref": "#/$defs/u32" },
+        "name": { "type": "string", "minLength": 1 }
+      }
+    },
+    "process_data": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rx": { "$ref": "#/$defs/processRegion" },
+        "tx": { "$ref": "#/$defs/processRegion" }
+      }
+    },
+    "object_dictionary": {
+      "type": "array",
+      "items": { "$ref": "#/$defs/objectEntry" }
+    },
+    "pdos": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "rx": { "type": "array", "items": { "$ref": "#/$defs/pdo" } },
+        "tx": { "type": "array", "items": { "$ref": "#/$defs/pdo" } }
+      }
+    }
+  },
+  "$defs": {
+    "u32": { "oneOf": [{ "type": "integer", "minimum": 0, "maximum": 4294967295 }, { "type": "string", "pattern": "^0x[0-9a-fA-F]+$" }] },
+    "u16": { "oneOf": [{ "type": "integer", "minimum": 0, "maximum": 65535 }, { "type": "string", "pattern": "^0x[0-9a-fA-F]+$" }] },
+    "u8": { "oneOf": [{ "type": "integer", "minimum": 0, "maximum": 255 }, { "type": "string", "pattern": "^0x[0-9a-fA-F]+$" }] },
+    "processRegion": {
+      "type": "object",
+      "additionalProperties": false,
+      "properties": {
+        "address": { "$ref": "#/$defs/u32" },
+        "size": { "type": "integer", "minimum": 0 }
+      }
+    },
+    "objectEntry": {
+      "type": "object",
+      "required": ["index", "subindex", "name", "type", "access"],
+      "additionalProperties": false,
+      "properties": {
+        "index": { "$ref": "#/$defs/u16" },
+        "subindex": { "$ref": "#/$defs/u8" },
+        "name": { "type": "string" },
+        "type": { "enum": ["bool", "bit", "uint8", "int8", "uint16", "int16", "uint32", "int32", "uint64", "int64"] },
+        "bit_length": { "type": "integer", "minimum": 1, "maximum": 65535 },
+        "access": { "enum": ["ro", "rw", "wo"] },
+        "default": { "type": "string" },
+        "pdo": { "enum": ["rx", "tx"] }
+      }
+    },
+    "pdo": {
+      "type": "object",
+      "required": ["index", "entries"],
+      "additionalProperties": false,
+      "properties": {
+        "index": { "$ref": "#/$defs/u16" },
+        "name": { "type": "string" },
+        "entries": { "type": "array", "items": { "$ref": "#/$defs/pdoEntry" } }
+      }
+    },
+    "pdoEntry": {
+      "type": "object",
+      "required": ["index", "subindex"],
+      "additionalProperties": false,
+      "properties": {
+        "index": { "$ref": "#/$defs/u16" },
+        "subindex": { "$ref": "#/$defs/u8" }
+      }
+    }
+  }
+}
