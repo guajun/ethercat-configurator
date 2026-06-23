@@ -2,6 +2,8 @@ package cli
 
 import (
 	"bytes"
+	"os"
+	"path/filepath"
 	"strings"
 	"testing"
 
@@ -123,6 +125,82 @@ func TestValidateDeviceJSONDiagnostics(t *testing.T) {
 	}
 	if !strings.Contains(stderr.String(), diag.CodePDIBufferTooSmall) || !strings.Contains(stderr.String(), diag.CodePDILayoutOutOfRange) {
 		t.Fatalf("expected PDI diagnostics, got %q", stderr.String())
+	}
+}
+
+func TestReportMarkdownOutput(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{"report", "../../examples/lan9252-basic/device.yaml"}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected exit code %d, got %d", ExitSuccess, exitCode)
+	}
+	if !strings.Contains(stdout.String(), "# EtherCAT Configuration Report: LAN9252 Basic") || !strings.Contains(stdout.String(), "## Process Data Address Regions") {
+		t.Fatalf("expected markdown report, got %q", stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
+	}
+}
+
+func TestReportJSONOutputAcceptsSingleDashJSON(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{"-json", "report", "../../examples/lan9252-basic/device.yaml"}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected exit code %d, got %d", ExitSuccess, exitCode)
+	}
+	if !strings.HasPrefix(stdout.String(), "{\"target\":\"../../examples/lan9252-basic/device.yaml\"") || !strings.Contains(stdout.String(), "\"diagnostics\":[]") {
+		t.Fatalf("expected JSON report, got %q", stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
+	}
+}
+
+func TestReportWritesOutputFile(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	outputPath := filepath.Join(t.TempDir(), "report.md")
+
+	exitCode := Run([]string{"report", "../../examples/lan9252-basic/device.yaml", "-o", outputPath}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected exit code %d, got %d", ExitSuccess, exitCode)
+	}
+	if got := strings.TrimSpace(stdout.String()); got != "report ../../examples/lan9252-basic/device.yaml: ok" {
+		t.Fatalf("expected success output, got %q", got)
+	}
+	data, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("expected report file, got %v", err)
+	}
+	if !strings.Contains(string(data), "## PDO Table") {
+		t.Fatalf("expected markdown report file, got %q", string(data))
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
+	}
+}
+
+func TestReportMissingFileReturnsDiagnostic(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+
+	exitCode := Run([]string{"--json", "report", "../../fixtures/missing.yaml"}, &stdout, &stderr)
+
+	if exitCode != ExitValidationError {
+		t.Fatalf("expected exit code %d, got %d", ExitValidationError, exitCode)
+	}
+	if stdout.Len() != 0 {
+		t.Fatalf("expected empty stdout, got %q", stdout.String())
+	}
+	if !strings.Contains(stderr.String(), diag.CodeConfigParseError) {
+		t.Fatalf("expected parse diagnostic, got %q", stderr.String())
 	}
 }
 
