@@ -2,9 +2,17 @@ package model
 
 type Direction string
 
+type BufferMode string
+
 const (
 	DirectionRX Direction = "rx"
 	DirectionTX Direction = "tx"
+)
+
+const (
+	BufferModeSingle BufferMode = "single"
+	BufferModeDouble BufferMode = "double"
+	BufferModeTriple BufferMode = "triple"
 )
 
 type Device struct {
@@ -29,6 +37,7 @@ type ProcessData struct {
 type ProcessDataRegion struct {
 	Address    uint32
 	Size       uint32
+	BufferMode BufferMode
 	Configured bool
 }
 
@@ -94,8 +103,20 @@ type AddressRegion struct {
 	Address       uint32
 	RequiredBytes uint32
 	BufferBytes   uint32
+	BufferMode    BufferMode
 	End           uint32
 	FromDefault   bool
+}
+
+func BufferCount(mode BufferMode) uint32 {
+	switch mode {
+	case BufferModeDouble:
+		return 2
+	case BufferModeTriple:
+		return 3
+	default:
+		return 1
+	}
 }
 
 func ObjectKey(index uint16, subindex uint8) uint32 {

@@ -1,28 +1,30 @@
 identity:
   vendor_id: 0x00000a88
-  product_code: 0x00000005
+  product_code: 0x00000007
   revision: 0x00000001
-  name: Explicit Fit
+  name: Sync Manager Overlap
 process_data:
   rx:
-    address: 0x1200
-    size: 512
+    address: 0x1000
+    size: 192
+    buffer_mode: triple
   tx:
-    address: 0x1800
-    size: 512
+    address: 0x1200
+    size: 192
+    buffer_mode: triple
 object_dictionary:
   - index: 0x7000
     subindex: 1
     name: Large Output
     type: bit
-    bit_length: 4096
+    bit_length: 1536
     access: rw
     pdo: rx
   - index: 0x6000
     subindex: 1
     name: Large Input
     type: bit
-    bit_length: 4096
+    bit_length: 1536
     access: ro
     pdo: tx
 pdos:

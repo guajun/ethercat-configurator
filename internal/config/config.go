@@ -49,8 +49,9 @@ type rawProcessData struct {
 }
 
 type rawProcessDataRegion struct {
-	Address any    `yaml:"address"`
-	Size    uint32 `yaml:"size"`
+	Address    any    `yaml:"address"`
+	Size       uint32 `yaml:"size"`
+	BufferMode string `yaml:"buffer_mode"`
 }
 
 type rawObject struct {
@@ -140,12 +141,26 @@ type normalizer struct {
 }
 
 func (builder *normalizer) region(raw rawProcessDataRegion) model.ProcessDataRegion {
-	region := model.ProcessDataRegion{Size: raw.Size}
+	region := model.ProcessDataRegion{Size: raw.Size, BufferMode: builder.bufferMode(raw.BufferMode)}
 	if raw.Address != nil {
 		region.Address = builder.uint32(raw.Address, "process data address")
 		region.Configured = true
 	}
 	return region
+}
+
+func (builder *normalizer) bufferMode(value string) model.BufferMode {
+	switch strings.ToLower(value) {
+	case "", "single":
+		return model.BufferModeSingle
+	case "double":
+		return model.BufferModeDouble
+	case "triple":
+		return model.BufferModeTriple
+	default:
+		builder.add(diag.CodeConfigParseError, fmt.Sprintf("unsupported process data buffer_mode %q", value))
+		return model.BufferModeSingle
+	}
 }
 
 func (builder *normalizer) pdos(rawPDOs []rawPDO) []model.PDO {
