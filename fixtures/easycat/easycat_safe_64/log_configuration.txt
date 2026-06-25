@@ -1,0 +1,353 @@
+
+Easy Configurator, configuration engine  V_3_3 
+
+log created on Thu Jun 25 17:23:33 2026
+
+Analyzing the project file
+
+Easy Configurator project easycat_safe_64.prj
+
+OUTPUTS_TAG
+Line 4 --- out_word_00             uint32_t
+Line 5 --- out_word_01             uint32_t
+Line 6 --- out_word_02             uint32_t
+Line 7 --- out_word_03             uint32_t
+Line 8 --- out_word_04             uint32_t
+Line 9 --- out_word_05             uint32_t
+Line 10 --- out_word_06             uint32_t
+Line 11 --- out_word_07             uint32_t
+Line 12 --- out_word_08             uint32_t
+Line 13 --- out_word_09             uint32_t
+Line 14 --- out_word_10             uint32_t
+Line 15 --- out_word_11             uint32_t
+Line 16 --- out_word_12             uint32_t
+Line 17 --- out_word_13             uint32_t
+Line 18 --- out_word_14             uint32_t
+Line 19 --- out_word_15             uint32_t
+INPUTS_TAG
+Line 21 --- in_word_00              uint32_t
+Line 22 --- in_word_01              uint32_t
+Line 23 --- in_word_02              uint32_t
+Line 24 --- in_word_03              uint32_t
+Line 25 --- in_word_04              uint32_t
+Line 26 --- in_word_05              uint32_t
+Line 27 --- in_word_06              uint32_t
+Line 28 --- in_word_07              uint32_t
+Line 29 --- in_word_08              uint32_t
+Line 30 --- in_word_09              uint32_t
+Line 31 --- in_word_10              uint32_t
+Line 32 --- in_word_11              uint32_t
+Line 33 --- in_word_12              uint32_t
+Line 34 --- in_word_13              uint32_t
+Line 35 --- in_word_14              uint32_t
+Line 36 --- in_word_15              uint32_t
+INFO_TAG
+0x0000079A
+guajun
+0xABCDE064
+0x00000002
+easycat_safe_64
+easycat_safe_64
+END_TAG
+
+The easycat_safe_64.prj configuration file is correct
+
+ByteNumOut 64
+ByteNumIn  64
+PdoNumOut  16
+PdoNumIn   16
+
+Creating the easycat_safe_64.xml file
+
+PROJECT_TAG   easycat_safe_64.prj
+VENDOID_TAG   0000079A
+VEN_NAM_TAG   guajun
+PRO_COD_TAG   ABCDE064
+REVISIO_TAG   00000002
+DEV_NAM_TAG   easycat_safe_64
+DEV_NAM_TAG   easycat_safe_64
+
+FIRST_TAG
+
+Output entries
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>1</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_00</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_01</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>3</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_02</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>4</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_03</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>5</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_04</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>6</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_05</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>7</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_06</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>8</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_07</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>9</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_08</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>10</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_09</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>11</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_10</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>12</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_11</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>13</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_12</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>14</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_13</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>15</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_14</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>16</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_15</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+
+Input entries
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>1</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_00</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_01</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>3</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_02</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>4</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_03</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>5</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_04</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>6</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_05</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>7</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_06</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>8</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_07</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>9</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_08</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>10</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_09</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>11</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_10</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>12</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_11</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>13</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_12</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>14</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_13</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>15</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_14</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>16</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_15</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+
+LAST_TAG
+
+The easycat_safe_64.xml file has been created
+
+Creating the easycat_safe_64.h file
+
+#define CUST_BYTE_NUM_OUT	64
+#define CUST_BYTE_NUM_IN	64
+#define TOT_BYTE_NUM_ROUND_OUT	64
+#define TOT_BYTE_NUM_ROUND_IN	64
+
+
+Output entries
+		uint32_t    out_word_00;
+		uint32_t    out_word_01;
+		uint32_t    out_word_02;
+		uint32_t    out_word_03;
+		uint32_t    out_word_04;
+		uint32_t    out_word_05;
+		uint32_t    out_word_06;
+		uint32_t    out_word_07;
+		uint32_t    out_word_08;
+		uint32_t    out_word_09;
+		uint32_t    out_word_10;
+		uint32_t    out_word_11;
+		uint32_t    out_word_12;
+		uint32_t    out_word_13;
+		uint32_t    out_word_14;
+		uint32_t    out_word_15;
+
+Input entries
+		uint32_t    in_word_00;
+		uint32_t    in_word_01;
+		uint32_t    in_word_02;
+		uint32_t    in_word_03;
+		uint32_t    in_word_04;
+		uint32_t    in_word_05;
+		uint32_t    in_word_06;
+		uint32_t    in_word_07;
+		uint32_t    in_word_08;
+		uint32_t    in_word_09;
+		uint32_t    in_word_10;
+		uint32_t    in_word_11;
+		uint32_t    in_word_12;
+		uint32_t    in_word_13;
+		uint32_t    in_word_14;
+		uint32_t    in_word_15;
+
+The easycat_safe_64.h file has been created
+
+Creating the easycat_safe_64.bin file
+
+
+The easycat_safe_64.bin file has been created

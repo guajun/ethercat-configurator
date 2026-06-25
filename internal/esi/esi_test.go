@@ -31,7 +31,7 @@ func TestGenerateAndParseFixture(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected golden ESI fixture, got %v", err)
 	}
-	if string(golden) != text {
+	if normalizeNewlines(string(golden)) != text {
 		t.Fatalf("expected generated ESI XML to match golden fixture")
 	}
 
@@ -48,4 +48,8 @@ func TestGenerateAndParseFixture(t *testing.T) {
 	if summary.ProcessData[0].Address != "0x1000" || summary.ProcessData[1].Address != "0x1100" {
 		t.Fatalf("expected process data addresses, got %#v", summary.ProcessData)
 	}
+}
+
+func normalizeNewlines(value string) string {
+	return strings.ReplaceAll(value, "\r\n", "\n")
 }
