@@ -52,7 +52,8 @@ func writeIdentity(output *bytes.Buffer, prefix string, identity model.Identity)
 func writeRegion(output *bytes.Buffer, prefix string, label string, region model.AddressRegion) {
 	fmt.Fprintf(output, "#define %s_%s_PDI_ADDRESS 0x%04XU\n", prefix, label, region.Address)
 	fmt.Fprintf(output, "#define %s_%s_REQUIRED_BYTES %dU\n", prefix, label, region.RequiredBytes)
-	fmt.Fprintf(output, "#define %s_%s_BUFFER_BYTES %dU\n\n", prefix, label, region.BufferBytes)
+	fmt.Fprintf(output, "#define %s_%s_BUFFER_BYTES %dU\n", prefix, label, region.BufferBytes)
+	fmt.Fprintf(output, "#define %s_%s_BUFFER_COUNT %dU\n\n", prefix, label, model.BufferCount(region.BufferMode))
 }
 
 func writeEntries(output *bytes.Buffer, prefix string, direction string, layout model.LayoutDirection) {

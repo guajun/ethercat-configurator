@@ -62,6 +62,7 @@ type ProcessDataRegion struct {
 	Address       string `json:"address"`
 	RequiredBytes uint32 `json:"required_bytes"`
 	BufferBytes   uint32 `json:"buffer_bytes"`
+	BufferMode    string `json:"buffer_mode"`
 	End           string `json:"end"`
 	Source        string `json:"source"`
 }
@@ -71,6 +72,7 @@ type SyncManager struct {
 	Direction     string `json:"direction"`
 	RequiredBytes uint32 `json:"required_bytes"`
 	BufferBytes   uint32 `json:"buffer_bytes"`
+	BufferMode    string `json:"buffer_mode"`
 }
 
 func Build(target string, device model.Device, layout model.Layout, addressMap model.AddressMap, diagnostics []diag.Diagnostic) Report {
@@ -129,18 +131,18 @@ func RenderMarkdown(writer io.Writer, report Report) error {
 	builder.WriteString("\n")
 
 	builder.WriteString("## Process Data Address Regions\n\n")
-	builder.WriteString("| Direction | Address | Required Bytes | Buffer Bytes | End | Source |\n")
-	builder.WriteString("| --- | --- | ---: | ---: | --- | --- |\n")
+	builder.WriteString("| Direction | Address | Required Bytes | Buffer Bytes | Buffer Mode | End | Source |\n")
+	builder.WriteString("| --- | --- | ---: | ---: | --- | --- | --- |\n")
 	for _, region := range report.ProcessData {
-		fmt.Fprintf(builder, "| `%s` | `%s` | %d | %d | `%s` | `%s` |\n", region.Direction, region.Address, region.RequiredBytes, region.BufferBytes, region.End, region.Source)
+		fmt.Fprintf(builder, "| `%s` | `%s` | %d | %d | `%s` | `%s` | `%s` |\n", region.Direction, region.Address, region.RequiredBytes, region.BufferBytes, region.BufferMode, region.End, region.Source)
 	}
 	builder.WriteString("\n")
 
 	builder.WriteString("## Sync Manager Sizes\n\n")
-	builder.WriteString("| Sync Manager | Direction | Required Bytes | Buffer Bytes |\n")
-	builder.WriteString("| ---: | --- | ---: | ---: |\n")
+	builder.WriteString("| Sync Manager | Direction | Required Bytes | Buffer Bytes | Buffer Mode |\n")
+	builder.WriteString("| ---: | --- | ---: | ---: | --- |\n")
 	for _, syncManager := range report.SyncManagers {
-		fmt.Fprintf(builder, "| %d | `%s` | %d | %d |\n", syncManager.Index, syncManager.Direction, syncManager.RequiredBytes, syncManager.BufferBytes)
+		fmt.Fprintf(builder, "| %d | `%s` | %d | %d | `%s` |\n", syncManager.Index, syncManager.Direction, syncManager.RequiredBytes, syncManager.BufferBytes, syncManager.BufferMode)
 	}
 	builder.WriteString("\n")
 
@@ -231,6 +233,7 @@ func processDataRegion(region model.AddressRegion) ProcessDataRegion {
 		Address:       hex16(uint16(region.Address)),
 		RequiredBytes: region.RequiredBytes,
 		BufferBytes:   region.BufferBytes,
+		BufferMode:    string(region.BufferMode),
 		End:           hex16(uint16(region.End)),
 		Source:        source,
 	}
@@ -238,8 +241,8 @@ func processDataRegion(region model.AddressRegion) ProcessDataRegion {
 
 func buildSyncManagers(addressMap model.AddressMap) []SyncManager {
 	return []SyncManager{
-		{Index: 2, Direction: string(addressMap.RX.Direction), RequiredBytes: addressMap.RX.RequiredBytes, BufferBytes: addressMap.RX.BufferBytes},
-		{Index: 3, Direction: string(addressMap.TX.Direction), RequiredBytes: addressMap.TX.RequiredBytes, BufferBytes: addressMap.TX.BufferBytes},
+		{Index: 2, Direction: string(addressMap.RX.Direction), RequiredBytes: addressMap.RX.RequiredBytes, BufferBytes: addressMap.RX.BufferBytes, BufferMode: string(addressMap.RX.BufferMode)},
+		{Index: 3, Direction: string(addressMap.TX.Direction), RequiredBytes: addressMap.TX.RequiredBytes, BufferBytes: addressMap.TX.BufferBytes, BufferMode: string(addressMap.TX.BufferMode)},
 	}
 }
 

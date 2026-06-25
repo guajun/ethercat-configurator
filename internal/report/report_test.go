@@ -53,17 +53,17 @@ Total entries: 4
 
 ## Process Data Address Regions
 
-| Direction | Address | Required Bytes | Buffer Bytes | End | Source |
-| --- | --- | ---: | ---: | --- | --- |
-| ` + "`rx`" + ` | ` + "`0x1000`" + ` | 3 | 256 | ` + "`0x1100`" + ` | ` + "`default`" + ` |
-| ` + "`tx`" + ` | ` + "`0x1100`" + ` | 3 | 256 | ` + "`0x1200`" + ` | ` + "`default`" + ` |
+| Direction | Address | Required Bytes | Buffer Bytes | Buffer Mode | End | Source |
+| --- | --- | ---: | ---: | --- | --- | --- |
+| ` + "`rx`" + ` | ` + "`0x1000`" + ` | 3 | 256 | ` + "`single`" + ` | ` + "`0x1100`" + ` | ` + "`default`" + ` |
+| ` + "`tx`" + ` | ` + "`0x1100`" + ` | 3 | 256 | ` + "`single`" + ` | ` + "`0x1200`" + ` | ` + "`default`" + ` |
 
 ## Sync Manager Sizes
 
-| Sync Manager | Direction | Required Bytes | Buffer Bytes |
-| ---: | --- | ---: | ---: |
-| 2 | ` + "`rx`" + ` | 3 | 256 |
-| 3 | ` + "`tx`" + ` | 3 | 256 |
+| Sync Manager | Direction | Required Bytes | Buffer Bytes | Buffer Mode |
+| ---: | --- | ---: | ---: | --- |
+| 2 | ` + "`rx`" + ` | 3 | 256 | ` + "`single`" + ` |
+| 3 | ` + "`tx`" + ` | 3 | 256 | ` + "`single`" + ` |
 
 ## Diagnostics
 
@@ -88,7 +88,7 @@ func TestBuildReportIncludesDefaultRegionDiagnostics(t *testing.T) {
 	if err := RenderMarkdown(&output, reportData); err != nil {
 		t.Fatalf("expected nil error, got %v", err)
 	}
-	if !strings.Contains(output.String(), diag.CodePDIBufferTooSmall) || !strings.Contains(output.String(), "| `rx` | `0x1000` | 512 | 256 |") {
+	if !strings.Contains(output.String(), diag.CodePDIBufferTooSmall) || !strings.Contains(output.String(), "| `rx` | `0x1000` | 512 | 256 | `single` |") {
 		t.Fatalf("expected oversized default region and diagnostics, got %q", output.String())
 	}
 }

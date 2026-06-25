@@ -28,7 +28,7 @@ func TestGenerateHeaderFixture(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected golden header fixture, got %v", err)
 	}
-	if string(golden) != text {
+	if normalizeNewlines(string(golden)) != text {
 		t.Fatalf("expected generated header to match golden fixture")
 	}
 	checks := []string{
@@ -44,4 +44,8 @@ func TestGenerateHeaderFixture(t *testing.T) {
 			t.Fatalf("expected header to contain %q, got %q", check, text)
 		}
 	}
+}
+
+func normalizeNewlines(value string) string {
+	return strings.ReplaceAll(value, "\r\n", "\n")
 }
