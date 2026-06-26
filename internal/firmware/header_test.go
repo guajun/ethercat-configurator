@@ -32,16 +32,22 @@ func TestGenerateHeaderFixture(t *testing.T) {
 		t.Fatalf("expected generated header to match golden fixture")
 	}
 	checks := []string{
-		"#define LAN9252_BASIC_RX_PDI_ADDRESS 0x1000U",
-		"#define LAN9252_BASIC_TX_PDI_ADDRESS 0x1100U",
-		"#define LAN9252_BASIC_RX_CONTROL_WORD_BYTE_OFFSET 0U",
-		"#define LAN9252_BASIC_RX_ENABLE_OUTPUT_BIT_OFFSET 16U",
-		"typedef struct LAN9252_BASIC_PACKED",
-		"_Static_assert(3U == LAN9252_BASIC_RX_REQUIRED_BYTES",
+		"#define CUST_BYTE_NUM_OUT\t3",
+		"#define CUST_BYTE_NUM_IN\t3",
+		"#define TOT_BYTE_NUM_ROUND_OUT\t3",
+		"typedef union",
+		"uint8_t Byte[TOT_BYTE_NUM_ROUND_OUT];",
+		"} PROCBUFFER_OUT;",
+		"} PROCBUFFER_IN;",
 	}
 	for _, check := range checks {
 		if !strings.Contains(text, check) {
 			t.Fatalf("expected header to contain %q, got %q", check, text)
+		}
+	}
+	for _, forbidden := range []string{"PDI_ADDRESS", "BYTE_OFFSET", "BIT_MASK", "_Static_assert", "RxProcessData"} {
+		if strings.Contains(text, forbidden) {
+			t.Fatalf("expected EasyCAT-style header to omit %q, got %q", forbidden, text)
 		}
 	}
 }

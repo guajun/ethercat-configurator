@@ -51,7 +51,7 @@ Generated artifacts are deterministic and come from the same canonical model:
 
 - `gen esi` writes a minimal ESI XML file with identity, Object Dictionary, PDO mappings, process data addresses, and Sync Manager metadata.
 - `gen sii` writes a stable EEPROM binary container with identity, strings, Object Dictionary, PDO mappings, process data addresses, and checksum validation.
-- `gen header` writes C/C++ constants, process data buffers, bit masks, byte offsets, and static assertions for firmware.
+- `gen header` writes an EasyCAT-style C/C++ header with OUT/IN process buffer unions derived from the PDO layout.
 - `inspect esi` and `inspect sii` print normalized summaries; pass `--json` for machine-readable output.
 
 ## Process Data Buffer Mode

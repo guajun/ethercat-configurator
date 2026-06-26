@@ -233,7 +233,7 @@ func TestGenCommandsWriteArtifacts(t *testing.T) {
 	}{
 		{name: "esi", artifact: "esi", fileName: "device.xml", contains: []byte("<EtherCATInfo>")},
 		{name: "sii", artifact: "sii", fileName: "eeprom.bin", contains: []byte("ECSII001")},
-		{name: "header", artifact: "header", fileName: "ethercat_device.h", contains: []byte("LAN9252_BASIC_RX_PDI_ADDRESS")},
+		{name: "header", artifact: "header", fileName: "ethercat_device.h", contains: []byte("PROCBUFFER_OUT")},
 	}
 
 	for _, test := range tests {
