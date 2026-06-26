@@ -27,7 +27,7 @@ Generated artifacts are deterministic and come from the same canonical model:
 - `gen header` writes an EasyCAT-style C/C++ header with OUT/IN process buffer unions derived from the PDO layout.
 - `inspect esi` and `inspect sii` print normalized summaries; pass `--json` for machine-readable output.
 
-When `gen header` emits fields such as `reserved_tail`, the CLI prints a warning. These warnings mean the EasyCAT-style struct has reserved bytes or omitted bit-level fields, so the named struct fields do not cover the process data buffer contiguously. Firmware can still use the generated `Byte[]` view for the complete buffer.
+When `gen header` emits fields such as `reserved_tail`, the CLI prints a warning. These warnings mean the EasyCAT-style struct has reserved bytes or omitted bit-level fields, so the named struct fields do not cover the process data buffer contiguously. In SPI DMA and other auto-increment transfer paths, non-contiguous named fields may not match the actual wire buffer layout.
 
 ## Why This Project
 

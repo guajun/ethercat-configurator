@@ -81,7 +81,7 @@ func headerWarnings(direction string, layout model.LayoutDirection) []HeaderWarn
 	byteCursor := uint32(0)
 	for entryIndex, entry := range entries {
 		if entry.BitOffset%8 != 0 || entry.BitLength%8 != 0 {
-			warnings = append(warnings, HeaderWarning{Direction: direction, Field: fieldName(entry.Name), Offset: entry.BitOffset / 8, Bytes: entry.ByteLength, Message: fmt.Sprintf("%s field %s uses bit-level layout and is omitted from EasyCAT-style struct; access it through Byte[]", direction, fieldName(entry.Name))})
+			warnings = append(warnings, HeaderWarning{Direction: direction, Field: fieldName(entry.Name), Offset: entry.BitOffset / 8, Bytes: entry.ByteLength, Message: fmt.Sprintf("%s field %s uses bit-level layout and is omitted from EasyCAT-style struct; named fields are not contiguous", direction, fieldName(entry.Name))})
 			continue
 		}
 		if entry.ByteOffset > byteCursor {
