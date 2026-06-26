@@ -225,6 +225,26 @@ func TestEasyCATReferenceBinaryMatchesIdentity(t *testing.T) {
 	}
 }
 
+func TestEasyCATReferenceBinaryMatchesSyncManagers(t *testing.T) {
+	for _, testCase := range referenceCases {
+		t.Run(testCase.name, func(t *testing.T) {
+			data, err := os.ReadFile(testCase.binPath)
+			if os.IsNotExist(err) {
+				t.Skipf("EasyCAT binary reference not generated yet: %s", testCase.binPath)
+			} else if err != nil {
+				t.Fatalf("expected EasyCAT binary reference, got %v", err)
+			}
+			rxAddress, txAddress, ok := easyCATBinarySyncManagerAddresses(data)
+			if !ok {
+				t.Fatalf("expected EasyCAT binary SyncManager category in %s", testCase.binPath)
+			}
+			if uint32(rxAddress) != testCase.wantRXAddress || uint32(txAddress) != testCase.wantTXAddress {
+				t.Fatalf("EasyCAT binary SM address mismatch: bin RX=%s TX=%s device RX=%s TX=%s", hex16(rxAddress), hex16(txAddress), hex16(uint16(testCase.wantRXAddress)), hex16(uint16(testCase.wantTXAddress)))
+			}
+		})
+	}
+}
+
 func assertSyncManager(t *testing.T, syncManagers []syncManager, name string, wantAddress uint32) {
 	t.Helper()
 	for _, syncManager := range syncManagers {
@@ -311,4 +331,27 @@ func hex32(value uint32) string {
 
 func littleEndianUint32(data []byte) uint32 {
 	return uint32(data[0]) | uint32(data[1])<<8 | uint32(data[2])<<16 | uint32(data[3])<<24
+}
+
+func littleEndianUint16(data []byte) uint16 {
+	return uint16(data[0]) | uint16(data[1])<<8
+}
+
+func easyCATBinarySyncManagerAddresses(data []byte) (uint16, uint16, bool) {
+	for offset := 0x80; offset+4 <= len(data); {
+		categoryType := littleEndianUint16(data[offset : offset+2])
+		wordLength := int(littleEndianUint16(data[offset+2 : offset+4]))
+		payloadStart := offset + 4
+		payloadEnd := payloadStart + wordLength*2
+		if categoryType == 0xffff || wordLength == 0 || payloadEnd > len(data) {
+			return 0, 0, false
+		}
+		if categoryType == 0x0029 && payloadEnd-payloadStart >= 16 {
+			rxAddress := littleEndianUint16(data[payloadStart : payloadStart+2])
+			txAddress := littleEndianUint16(data[payloadStart+8 : payloadStart+10])
+			return rxAddress, txAddress, true
+		}
+		offset = payloadEnd
+	}
+	return 0, 0, false
 }

@@ -4,6 +4,7 @@ This directory stores the 192-byte EasyCAT project and generated artifacts that 
 
 EasyCAT writes generated artifacts by keeping the project basename and changing only the suffix:
 
+- `device.yaml`
 - `known_bad_overlap.prj`
 - `known_bad_overlap.xml`
 - `known_bad_overlap.bin`

@@ -85,7 +85,7 @@ func TestAddressMapOverlapAlignmentAndRange(t *testing.T) {
 }
 
 func TestSyncManagerThreeBufferOverlap(t *testing.T) {
-	loadResult := config.LoadFile("../../fixtures/pdi/sync-manager-overlap.yaml")
+	loadResult := config.LoadFile("../../fixtures/easycat/known_bad_overlap/device.yaml")
 	layout, diagnostics := BuildLayout(loadResult.Device)
 	if len(diagnostics) != 0 {
 		t.Fatalf("expected no layout diagnostics, got %#v", diagnostics)
@@ -111,7 +111,7 @@ func TestSyncManagerThreeBufferAllowsSmallDefaultGap(t *testing.T) {
 }
 
 func TestSyncManagerOverlapRequiresTripleBufferMode(t *testing.T) {
-	loadResult := config.LoadFile("../../fixtures/pdi/sync-manager-overlap.yaml")
+	loadResult := config.LoadFile("../../fixtures/easycat/known_bad_overlap/device.yaml")
 	loadResult.Device.ProcessData.RX.BufferMode = ""
 	loadResult.Device.ProcessData.TX.BufferMode = ""
 	layout, diagnostics := BuildLayout(loadResult.Device)

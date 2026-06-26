@@ -272,7 +272,7 @@ func TestGenESIContinuesWithSyncManagerOverlapWarning(t *testing.T) {
 	var stderr bytes.Buffer
 	outputPath := filepath.Join(t.TempDir(), "device.xml")
 
-	exitCode := Run([]string{"gen", "esi", "../../fixtures/pdi/sync-manager-overlap.yaml", "-o", outputPath}, &stdout, &stderr)
+	exitCode := Run([]string{"gen", "esi", "../../fixtures/easycat/known_bad_overlap/device.yaml", "-o", outputPath}, &stdout, &stderr)
 
 	if exitCode != ExitSuccess {
 		t.Fatalf("expected generation to continue with warning, got exit code %d stderr=%q", exitCode, stderr.String())
