@@ -167,8 +167,8 @@ func validateDevice(path string, options runOptions, stdout io.Writer) *cliError
 	diagnostics = append(diagnostics, layoutDiagnostics...)
 	_, addressDiagnostics := pdo.BuildAddressMap(loadResult.Device, layout)
 	diagnostics = append(diagnostics, addressDiagnostics...)
-	if len(diagnostics) > 0 {
-		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	if errors := errorDiagnostics(diagnostics); len(errors) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: errors[0], diagnostics: errors}
 	}
 	if !options.Quiet {
 		writeValidateResult(stdout, options, path)
@@ -223,8 +223,8 @@ func runGenESI(args []string, options runOptions, stdout io.Writer) *cliError {
 		return err
 	}
 	device, layout, addressMap, diagnostics := loadValidatedDevice(target)
-	if len(diagnostics) > 0 {
-		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	if errors := errorDiagnostics(diagnostics); len(errors) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: errors[0], diagnostics: errors}
 	}
 	data, generateErr := esi.Generate(device, layout, addressMap)
 	if generateErr != nil {
@@ -235,6 +235,7 @@ func runGenESI(args []string, options runOptions, stdout io.Writer) *cliError {
 	}
 	if !options.Quiet {
 		writeResult(stdout, options, "gen esi", target)
+		writeDiagnosticWarnings(stdout, diagnostics)
 	}
 	return nil
 }
@@ -245,8 +246,8 @@ func runGenSII(args []string, options runOptions, stdout io.Writer) *cliError {
 		return err
 	}
 	device, layout, addressMap, diagnostics := loadValidatedDevice(target)
-	if len(diagnostics) > 0 {
-		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	if errors := errorDiagnostics(diagnostics); len(errors) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: errors[0], diagnostics: errors}
 	}
 	data, generateErr := sii.Generate(device, layout, addressMap)
 	if generateErr != nil {
@@ -257,6 +258,7 @@ func runGenSII(args []string, options runOptions, stdout io.Writer) *cliError {
 	}
 	if !options.Quiet {
 		writeResult(stdout, options, "gen sii", target)
+		writeDiagnosticWarnings(stdout, diagnostics)
 	}
 	return nil
 }
@@ -267,8 +269,8 @@ func runGenHeader(args []string, options runOptions, stdout io.Writer) *cliError
 		return err
 	}
 	device, layout, addressMap, diagnostics := loadValidatedDevice(target)
-	if len(diagnostics) > 0 {
-		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
+	if errors := errorDiagnostics(diagnostics); len(errors) > 0 {
+		return &cliError{exitCode: ExitValidationError, diagnostic: errors[0], diagnostics: errors}
 	}
 	data, warnings, generateErr := firmware.GenerateHeaderWithWarnings(device, layout, addressMap)
 	if generateErr != nil {
@@ -279,6 +281,7 @@ func runGenHeader(args []string, options runOptions, stdout io.Writer) *cliError
 	}
 	if !options.Quiet {
 		writeResult(stdout, options, "gen header", target)
+		writeDiagnosticWarnings(stdout, diagnostics)
 		writeHeaderWarnings(stdout, warnings)
 	}
 	return nil
@@ -287,6 +290,14 @@ func runGenHeader(args []string, options runOptions, stdout io.Writer) *cliError
 func writeHeaderWarnings(stdout io.Writer, warnings []firmware.HeaderWarning) {
 	for _, warning := range warnings {
 		fmt.Fprintf(stdout, "warning: %s\n", warning.Message)
+	}
+}
+
+func writeDiagnosticWarnings(stdout io.Writer, diagnostics []diag.Diagnostic) {
+	for _, diagnostic := range diag.Sort(diagnostics) {
+		if diagnostic.Severity == diag.SeverityWarning {
+			fmt.Fprintf(stdout, "warning: %s: %s\n", diagnostic.Code, diagnostic.Message)
+		}
 	}
 }
 
@@ -475,6 +486,16 @@ func hasDiagnostic(diagnostics []diag.Diagnostic, code string) bool {
 		}
 	}
 	return false
+}
+
+func errorDiagnostics(diagnostics []diag.Diagnostic) []diag.Diagnostic {
+	var errors []diag.Diagnostic
+	for _, diagnostic := range diagnostics {
+		if diagnostic.Severity == diag.SeverityError {
+			errors = append(errors, diagnostic)
+		}
+	}
+	return errors
 }
 
 func writeResult(stdout io.Writer, options runOptions, command string, target string) {

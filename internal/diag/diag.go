@@ -57,6 +57,10 @@ func Error(code string, message string) Diagnostic {
 	return Diagnostic{Code: code, Severity: SeverityError, Message: message}
 }
 
+func Warning(code string, message string) Diagnostic {
+	return Diagnostic{Code: code, Severity: SeverityWarning, Message: message}
+}
+
 func RenderJSON(writer io.Writer, result Result) error {
 	result.Diagnostics = Sort(result.Diagnostics)
 	if result.Diagnostics == nil {

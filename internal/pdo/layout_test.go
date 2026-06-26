@@ -92,6 +92,7 @@ func TestSyncManagerThreeBufferOverlap(t *testing.T) {
 	}
 	_, diagnostics = BuildAddressMap(loadResult.Device, layout)
 	assertHasDiagnostic(t, diagnostics, diag.CodePDISyncManagerOverlap)
+	assertDiagnosticSeverity(t, diagnostics, diag.CodePDISyncManagerOverlap, diag.SeverityWarning)
 }
 
 func TestSyncManagerThreeBufferAllowsSmallDefaultGap(t *testing.T) {
@@ -138,4 +139,17 @@ func assertNoDiagnostic(t *testing.T, diagnostics []diag.Diagnostic, code string
 			t.Fatalf("unexpected diagnostic %s in %#v", code, diagnostics)
 		}
 	}
+}
+
+func assertDiagnosticSeverity(t *testing.T, diagnostics []diag.Diagnostic, code string, severity diag.Severity) {
+	t.Helper()
+	for _, diagnostic := range diagnostics {
+		if diagnostic.Code == code {
+			if diagnostic.Severity != severity {
+				t.Fatalf("expected diagnostic %s severity %s, got %s", code, severity, diagnostic.Severity)
+			}
+			return
+		}
+	}
+	t.Fatalf("expected diagnostic %s in %#v", code, diagnostics)
 }

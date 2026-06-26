@@ -267,6 +267,31 @@ func TestGenCommandsWriteArtifacts(t *testing.T) {
 	}
 }
 
+func TestGenESIContinuesWithSyncManagerOverlapWarning(t *testing.T) {
+	var stdout bytes.Buffer
+	var stderr bytes.Buffer
+	outputPath := filepath.Join(t.TempDir(), "device.xml")
+
+	exitCode := Run([]string{"gen", "esi", "../../fixtures/pdi/sync-manager-overlap.yaml", "-o", outputPath}, &stdout, &stderr)
+
+	if exitCode != ExitSuccess {
+		t.Fatalf("expected generation to continue with warning, got exit code %d stderr=%q", exitCode, stderr.String())
+	}
+	data, err := os.ReadFile(outputPath)
+	if err != nil {
+		t.Fatalf("expected generated ESI file, got %v", err)
+	}
+	if !bytes.Contains(data, []byte("<EtherCATInfo>")) {
+		t.Fatalf("expected generated ESI XML, got %q", data)
+	}
+	if !strings.Contains(stdout.String(), "warning: "+diag.CodePDISyncManagerOverlap) || !strings.Contains(stdout.String(), "0x1000-0x1240 overlaps TX start 0x1200") {
+		t.Fatalf("expected explicit SyncManager overlap warning, got %q", stdout.String())
+	}
+	if stderr.Len() != 0 {
+		t.Fatalf("expected empty stderr, got %q", stderr.String())
+	}
+}
+
 func TestInspectCommandsRenderSummaries(t *testing.T) {
 	tests := []struct {
 		name     string
