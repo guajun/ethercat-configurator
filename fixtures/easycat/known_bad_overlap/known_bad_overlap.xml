@@ -25,7 +25,7 @@
 <!--                                                                                        --> 
 <!--     This file has been created by the EasyCAT configuration tool                       -->       
 <!--                                                                                        --> 
-<!--     Easy Configurator project ethercat_configurator_reference.prj                                              -->       
+<!--     Easy Configurator project known_bad_overlap.prj                                              -->       
 <!--                                                                                        --> 
 <!-- ************************************************************************************** --> 
 
@@ -53,8 +53,8 @@
 <!-- ************************************************************************************** -->   
 
       <Device Physics="YY">
-        <Type ProductCode="#xABCDE010" RevisionNo="#x00000002" CheckRevisionNo="EQ_OR_G">ethercat_configurator_reference</Type>
-        <Name LcId="1033"><![CDATA[ethercat_configurator_reference]]></Name>        
+        <Type ProductCode="#xABCDE010" RevisionNo="#x00000002" CheckRevisionNo="EQ_OR_G">known_bad_overlap</Type>
+        <Name LcId="1033"><![CDATA[known_bad_overlap]]></Name>        
         <GroupType>SSC_Device</GroupType>
 
         <Fmmu>Outputs</Fmmu>

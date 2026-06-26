@@ -1,11 +1,11 @@
 
 Easy Configurator, configuration engine  V_3_3 
 
-log created on Thu Jun 25 16:06:20 2026
+log created on Fri Jun 26 15:38:04 2026
 
 Analyzing the project file
 
-Easy Configurator project ethercat_configurator_reference.prj
+Easy Configurator project known_bad_overlap.prj
 
 OUTPUTS_TAG
 Line 4 --- out_word_00             uint32_t
@@ -110,26 +110,26 @@ INFO_TAG
 guajun
 0xABCDE010
 0x00000002
-ethercat_configurator_reference
-ethercat_configurator_reference
+known_bad_overlap
+known_bad_overlap
 END_TAG
 
-The ethercat_configurator_reference.prj configuration file is correct
+The known_bad_overlap.prj configuration file is correct
 
 ByteNumOut 192
 ByteNumIn  192
 PdoNumOut  48
 PdoNumIn   48
 
-Creating the ethercat_configurator_reference.xml file
+Creating the known_bad_overlap.xml file
 
-PROJECT_TAG   ethercat_configurator_reference.prj
+PROJECT_TAG   known_bad_overlap.prj
 VENDOID_TAG   0000079A
 VEN_NAM_TAG   guajun
 PRO_COD_TAG   ABCDE010
 REVISIO_TAG   00000002
-DEV_NAM_TAG   ethercat_configurator_reference
-DEV_NAM_TAG   ethercat_configurator_reference
+DEV_NAM_TAG   known_bad_overlap
+DEV_NAM_TAG   known_bad_overlap
 
 FIRST_TAG
 
@@ -811,9 +811,9 @@ Input entries
 
 LAST_TAG
 
-The ethercat_configurator_reference.xml file has been created
+The known_bad_overlap.xml file has been created
 
-Creating the ethercat_configurator_reference.h file
+Creating the known_bad_overlap.h file
 
 #define CUST_BYTE_NUM_OUT	192
 #define CUST_BYTE_NUM_IN	192
@@ -921,9 +921,9 @@ Input entries
 		uint32_t    in_word_46;
 		uint32_t    in_word_47;
 
-The ethercat_configurator_reference.h file has been created
+The known_bad_overlap.h file has been created
 
-Creating the ethercat_configurator_reference.bin file
+Creating the known_bad_overlap.bin file
 
 
-The ethercat_configurator_reference.bin file has been created
+The known_bad_overlap.bin file has been created

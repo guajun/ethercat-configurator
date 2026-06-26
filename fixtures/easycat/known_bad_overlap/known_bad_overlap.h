@@ -5,7 +5,7 @@
 //                                                                   //
 //     This file has been created by the Easy Configurator tool      //
 //                                                                   //
-//     Easy Configurator project ethercat_configurator_reference.prj
+//     Easy Configurator project known_bad_overlap.prj
 //                                                                   //
 //-------------------------------------------------------------------//
 
