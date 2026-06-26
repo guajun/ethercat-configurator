@@ -47,7 +47,7 @@ type referenceCase struct {
 	wantProductCode uint32
 }
 
-const easyCATKnownBadXMLPath = "../../fixtures/easycat/ethercat_configurator_reference/known_bad_overlap.xml"
+const easyCATKnownBadXMLPath = "../../fixtures/easycat/known_bad_overlap/known_bad_overlap.xml"
 
 type etherCATInfo struct {
 	Vendor       vendor       `xml:"Vendor"`
