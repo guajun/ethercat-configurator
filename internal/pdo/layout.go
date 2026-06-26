@@ -101,7 +101,7 @@ func region(direction model.Direction, configured model.ProcessDataRegion, requi
 	if bufferBytes == 0 {
 		bufferBytes = 0x0100
 	}
-	return model.AddressRegion{Direction: direction, Address: address, RequiredBytes: requiredBytes, BufferBytes: bufferBytes, End: address + bufferBytes, FromDefault: fromDefault}
+	return model.AddressRegion{Direction: direction, Address: address, RequiredBytes: requiredBytes, BufferBytes: bufferBytes, BufferMode: configured.BufferMode, End: address + bufferBytes, FromDefault: fromDefault}
 }
 
 func validateAddressMap(addressMap model.AddressMap) []diag.Diagnostic {
@@ -123,6 +123,9 @@ func validateAddressMap(addressMap model.AddressMap) []diag.Diagnostic {
 	}
 	if overlaps(addressMap.RX, addressMap.TX) {
 		diagnostics = append(diagnostics, diag.Error(diag.CodePDIRegionOverlap, fmt.Sprintf("RX process data region 0x%04x-0x%04x overlaps TX region 0x%04x-0x%04x", addressMap.RX.Address, addressMap.RX.End, addressMap.TX.Address, addressMap.TX.End)))
+	}
+	if addressMap.RX.BufferMode == model.BufferModeTriple && addressMap.RX.Address+addressMap.RX.RequiredBytes*model.BufferCount(addressMap.RX.BufferMode) > addressMap.TX.Address {
+		diagnostics = append(diagnostics, diag.Warning(diag.CodePDISyncManagerOverlap, fmt.Sprintf("RX triple-buffer SyncManager region 0x%04x-0x%04x overlaps TX start 0x%04x", addressMap.RX.Address, addressMap.RX.Address+addressMap.RX.RequiredBytes*model.BufferCount(addressMap.RX.BufferMode), addressMap.TX.Address)))
 	}
 	return diagnostics
 }

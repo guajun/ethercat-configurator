@@ -84,10 +84,70 @@ func TestAddressMapOverlapAlignmentAndRange(t *testing.T) {
 	assertHasDiagnostic(t, diagnostics, diag.CodePDILayoutOutOfRange)
 }
 
+func TestSyncManagerThreeBufferOverlap(t *testing.T) {
+	loadResult := config.LoadFile("../../fixtures/easycat/known_bad_overlap/device.yaml")
+	layout, diagnostics := BuildLayout(loadResult.Device)
+	if len(diagnostics) != 0 {
+		t.Fatalf("expected no layout diagnostics, got %#v", diagnostics)
+	}
+	_, diagnostics = BuildAddressMap(loadResult.Device, layout)
+	assertHasDiagnostic(t, diagnostics, diag.CodePDISyncManagerOverlap)
+	assertDiagnosticSeverity(t, diagnostics, diag.CodePDISyncManagerOverlap, diag.SeverityWarning)
+}
+
+func TestSyncManagerThreeBufferAllowsSmallDefaultGap(t *testing.T) {
+	loadResult := config.LoadFile("../../fixtures/easycat/easycat_safe_64/device.yaml")
+	layout, diagnostics := BuildLayout(loadResult.Device)
+	if len(diagnostics) != 0 {
+		t.Fatalf("expected no layout diagnostics, got %#v", diagnostics)
+	}
+	addressMap, diagnostics := BuildAddressMap(loadResult.Device, layout)
+	if len(diagnostics) != 0 {
+		t.Fatalf("expected 64-byte PDOs to fit in 0x1000/0x1200 gap, got %#v", diagnostics)
+	}
+	if addressMap.RX.Address+addressMap.RX.RequiredBytes*3 != 0x10c0 {
+		t.Fatalf("expected RX 3-buffer region to end at 0x10c0, got 0x%04x", addressMap.RX.Address+addressMap.RX.RequiredBytes*3)
+	}
+}
+
+func TestSyncManagerOverlapRequiresTripleBufferMode(t *testing.T) {
+	loadResult := config.LoadFile("../../fixtures/easycat/known_bad_overlap/device.yaml")
+	loadResult.Device.ProcessData.RX.BufferMode = ""
+	loadResult.Device.ProcessData.TX.BufferMode = ""
+	layout, diagnostics := BuildLayout(loadResult.Device)
+	if len(diagnostics) != 0 {
+		t.Fatalf("expected no layout diagnostics, got %#v", diagnostics)
+	}
+	_, diagnostics = BuildAddressMap(loadResult.Device, layout)
+	assertNoDiagnostic(t, diagnostics, diag.CodePDISyncManagerOverlap)
+}
+
 func assertHasDiagnostic(t *testing.T, diagnostics []diag.Diagnostic, code string) {
 	t.Helper()
 	for _, diagnostic := range diagnostics {
 		if diagnostic.Code == code {
+			return
+		}
+	}
+	t.Fatalf("expected diagnostic %s in %#v", code, diagnostics)
+}
+
+func assertNoDiagnostic(t *testing.T, diagnostics []diag.Diagnostic, code string) {
+	t.Helper()
+	for _, diagnostic := range diagnostics {
+		if diagnostic.Code == code {
+			t.Fatalf("unexpected diagnostic %s in %#v", code, diagnostics)
+		}
+	}
+}
+
+func assertDiagnosticSeverity(t *testing.T, diagnostics []diag.Diagnostic, code string, severity diag.Severity) {
+	t.Helper()
+	for _, diagnostic := range diagnostics {
+		if diagnostic.Code == code {
+			if diagnostic.Severity != severity {
+				t.Fatalf("expected diagnostic %s severity %s, got %s", code, severity, diagnostic.Severity)
+			}
 			return
 		}
 	}

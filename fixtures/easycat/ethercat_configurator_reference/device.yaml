@@ -1,0 +1,792 @@
+identity:
+  vendor_id: 0x0000079a
+  product_code: 0xabcde010
+  revision: 0x00000002
+  name: ethercat_configurator_reference
+process_data:
+  rx:
+    address: 0x1000
+    size: 192
+    buffer_mode: triple
+  tx:
+    address: 0x1800
+    size: 192
+    buffer_mode: triple
+object_dictionary:
+  - index: 0x7000
+    subindex: 1
+    name: out_word_00
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 2
+    name: out_word_01
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 3
+    name: out_word_02
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 4
+    name: out_word_03
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 5
+    name: out_word_04
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 6
+    name: out_word_05
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 7
+    name: out_word_06
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 8
+    name: out_word_07
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 9
+    name: out_word_08
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 10
+    name: out_word_09
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 11
+    name: out_word_10
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 12
+    name: out_word_11
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 13
+    name: out_word_12
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 14
+    name: out_word_13
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 15
+    name: out_word_14
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 16
+    name: out_word_15
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 17
+    name: out_word_16
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 18
+    name: out_word_17
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 19
+    name: out_word_18
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 20
+    name: out_word_19
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 21
+    name: out_word_20
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 22
+    name: out_word_21
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 23
+    name: out_word_22
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 24
+    name: out_word_23
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 25
+    name: out_word_24
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 26
+    name: out_word_25
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 27
+    name: out_word_26
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 28
+    name: out_word_27
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 29
+    name: out_word_28
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 30
+    name: out_word_29
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 31
+    name: out_word_30
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 32
+    name: out_word_31
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 33
+    name: out_word_32
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 34
+    name: out_word_33
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 35
+    name: out_word_34
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 36
+    name: out_word_35
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 37
+    name: out_word_36
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 38
+    name: out_word_37
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 39
+    name: out_word_38
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 40
+    name: out_word_39
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 41
+    name: out_word_40
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 42
+    name: out_word_41
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 43
+    name: out_word_42
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 44
+    name: out_word_43
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 45
+    name: out_word_44
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 46
+    name: out_word_45
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 47
+    name: out_word_46
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x7000
+    subindex: 48
+    name: out_word_47
+    type: uint32
+    access: rw
+    pdo: rx
+  - index: 0x6000
+    subindex: 1
+    name: in_word_00
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 2
+    name: in_word_01
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 3
+    name: in_word_02
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 4
+    name: in_word_03
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 5
+    name: in_word_04
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 6
+    name: in_word_05
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 7
+    name: in_word_06
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 8
+    name: in_word_07
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 9
+    name: in_word_08
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 10
+    name: in_word_09
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 11
+    name: in_word_10
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 12
+    name: in_word_11
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 13
+    name: in_word_12
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 14
+    name: in_word_13
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 15
+    name: in_word_14
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 16
+    name: in_word_15
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 17
+    name: in_word_16
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 18
+    name: in_word_17
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 19
+    name: in_word_18
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 20
+    name: in_word_19
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 21
+    name: in_word_20
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 22
+    name: in_word_21
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 23
+    name: in_word_22
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 24
+    name: in_word_23
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 25
+    name: in_word_24
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 26
+    name: in_word_25
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 27
+    name: in_word_26
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 28
+    name: in_word_27
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 29
+    name: in_word_28
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 30
+    name: in_word_29
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 31
+    name: in_word_30
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 32
+    name: in_word_31
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 33
+    name: in_word_32
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 34
+    name: in_word_33
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 35
+    name: in_word_34
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 36
+    name: in_word_35
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 37
+    name: in_word_36
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 38
+    name: in_word_37
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 39
+    name: in_word_38
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 40
+    name: in_word_39
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 41
+    name: in_word_40
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 42
+    name: in_word_41
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 43
+    name: in_word_42
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 44
+    name: in_word_43
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 45
+    name: in_word_44
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 46
+    name: in_word_45
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 47
+    name: in_word_46
+    type: uint32
+    access: ro
+    pdo: tx
+  - index: 0x6000
+    subindex: 48
+    name: in_word_47
+    type: uint32
+    access: ro
+    pdo: tx
+pdos:
+  rx:
+    - index: 0x1600
+      name: Outputs
+      entries:
+        - index: 0x7000
+          subindex: 1
+        - index: 0x7000
+          subindex: 2
+        - index: 0x7000
+          subindex: 3
+        - index: 0x7000
+          subindex: 4
+        - index: 0x7000
+          subindex: 5
+        - index: 0x7000
+          subindex: 6
+        - index: 0x7000
+          subindex: 7
+        - index: 0x7000
+          subindex: 8
+        - index: 0x7000
+          subindex: 9
+        - index: 0x7000
+          subindex: 10
+        - index: 0x7000
+          subindex: 11
+        - index: 0x7000
+          subindex: 12
+        - index: 0x7000
+          subindex: 13
+        - index: 0x7000
+          subindex: 14
+        - index: 0x7000
+          subindex: 15
+        - index: 0x7000
+          subindex: 16
+        - index: 0x7000
+          subindex: 17
+        - index: 0x7000
+          subindex: 18
+        - index: 0x7000
+          subindex: 19
+        - index: 0x7000
+          subindex: 20
+        - index: 0x7000
+          subindex: 21
+        - index: 0x7000
+          subindex: 22
+        - index: 0x7000
+          subindex: 23
+        - index: 0x7000
+          subindex: 24
+        - index: 0x7000
+          subindex: 25
+        - index: 0x7000
+          subindex: 26
+        - index: 0x7000
+          subindex: 27
+        - index: 0x7000
+          subindex: 28
+        - index: 0x7000
+          subindex: 29
+        - index: 0x7000
+          subindex: 30
+        - index: 0x7000
+          subindex: 31
+        - index: 0x7000
+          subindex: 32
+        - index: 0x7000
+          subindex: 33
+        - index: 0x7000
+          subindex: 34
+        - index: 0x7000
+          subindex: 35
+        - index: 0x7000
+          subindex: 36
+        - index: 0x7000
+          subindex: 37
+        - index: 0x7000
+          subindex: 38
+        - index: 0x7000
+          subindex: 39
+        - index: 0x7000
+          subindex: 40
+        - index: 0x7000
+          subindex: 41
+        - index: 0x7000
+          subindex: 42
+        - index: 0x7000
+          subindex: 43
+        - index: 0x7000
+          subindex: 44
+        - index: 0x7000
+          subindex: 45
+        - index: 0x7000
+          subindex: 46
+        - index: 0x7000
+          subindex: 47
+        - index: 0x7000
+          subindex: 48
+  tx:
+    - index: 0x1a00
+      name: Inputs
+      entries:
+        - index: 0x6000
+          subindex: 1
+        - index: 0x6000
+          subindex: 2
+        - index: 0x6000
+          subindex: 3
+        - index: 0x6000
+          subindex: 4
+        - index: 0x6000
+          subindex: 5
+        - index: 0x6000
+          subindex: 6
+        - index: 0x6000
+          subindex: 7
+        - index: 0x6000
+          subindex: 8
+        - index: 0x6000
+          subindex: 9
+        - index: 0x6000
+          subindex: 10
+        - index: 0x6000
+          subindex: 11
+        - index: 0x6000
+          subindex: 12
+        - index: 0x6000
+          subindex: 13
+        - index: 0x6000
+          subindex: 14
+        - index: 0x6000
+          subindex: 15
+        - index: 0x6000
+          subindex: 16
+        - index: 0x6000
+          subindex: 17
+        - index: 0x6000
+          subindex: 18
+        - index: 0x6000
+          subindex: 19
+        - index: 0x6000
+          subindex: 20
+        - index: 0x6000
+          subindex: 21
+        - index: 0x6000
+          subindex: 22
+        - index: 0x6000
+          subindex: 23
+        - index: 0x6000
+          subindex: 24
+        - index: 0x6000
+          subindex: 25
+        - index: 0x6000
+          subindex: 26
+        - index: 0x6000
+          subindex: 27
+        - index: 0x6000
+          subindex: 28
+        - index: 0x6000
+          subindex: 29
+        - index: 0x6000
+          subindex: 30
+        - index: 0x6000
+          subindex: 31
+        - index: 0x6000
+          subindex: 32
+        - index: 0x6000
+          subindex: 33
+        - index: 0x6000
+          subindex: 34
+        - index: 0x6000
+          subindex: 35
+        - index: 0x6000
+          subindex: 36
+        - index: 0x6000
+          subindex: 37
+        - index: 0x6000
+          subindex: 38
+        - index: 0x6000
+          subindex: 39
+        - index: 0x6000
+          subindex: 40
+        - index: 0x6000
+          subindex: 41
+        - index: 0x6000
+          subindex: 42
+        - index: 0x6000
+          subindex: 43
+        - index: 0x6000
+          subindex: 44
+        - index: 0x6000
+          subindex: 45
+        - index: 0x6000
+          subindex: 46
+        - index: 0x6000
+          subindex: 47
+        - index: 0x6000
+          subindex: 48

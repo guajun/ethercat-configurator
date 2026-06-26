@@ -1,0 +1,929 @@
+
+Easy Configurator, configuration engine  V_3_3 
+
+log created on Fri Jun 26 15:47:54 2026
+
+Analyzing the project file
+
+Easy Configurator project ethercat_configurator_reference.prj
+
+OUTPUTS_TAG
+Line 4 --- out_word_00             uint32_t
+Line 5 --- out_word_01             uint32_t
+Line 6 --- out_word_02             uint32_t
+Line 7 --- out_word_03             uint32_t
+Line 8 --- out_word_04             uint32_t
+Line 9 --- out_word_05             uint32_t
+Line 10 --- out_word_06             uint32_t
+Line 11 --- out_word_07             uint32_t
+Line 12 --- out_word_08             uint32_t
+Line 13 --- out_word_09             uint32_t
+Line 14 --- out_word_10             uint32_t
+Line 15 --- out_word_11             uint32_t
+Line 16 --- out_word_12             uint32_t
+Line 17 --- out_word_13             uint32_t
+Line 18 --- out_word_14             uint32_t
+Line 19 --- out_word_15             uint32_t
+Line 20 --- out_word_16             uint32_t
+Line 21 --- out_word_17             uint32_t
+Line 22 --- out_word_18             uint32_t
+Line 23 --- out_word_19             uint32_t
+Line 24 --- out_word_20             uint32_t
+Line 25 --- out_word_21             uint32_t
+Line 26 --- out_word_22             uint32_t
+Line 27 --- out_word_23             uint32_t
+Line 28 --- out_word_24             uint32_t
+Line 29 --- out_word_25             uint32_t
+Line 30 --- out_word_26             uint32_t
+Line 31 --- out_word_27             uint32_t
+Line 32 --- out_word_28             uint32_t
+Line 33 --- out_word_29             uint32_t
+Line 34 --- out_word_30             uint32_t
+Line 35 --- out_word_31             uint32_t
+Line 36 --- out_word_32             uint32_t
+Line 37 --- out_word_33             uint32_t
+Line 38 --- out_word_34             uint32_t
+Line 39 --- out_word_35             uint32_t
+Line 40 --- out_word_36             uint32_t
+Line 41 --- out_word_37             uint32_t
+Line 42 --- out_word_38             uint32_t
+Line 43 --- out_word_39             uint32_t
+Line 44 --- out_word_40             uint32_t
+Line 45 --- out_word_41             uint32_t
+Line 46 --- out_word_42             uint32_t
+Line 47 --- out_word_43             uint32_t
+Line 48 --- out_word_44             uint32_t
+Line 49 --- out_word_45             uint32_t
+Line 50 --- out_word_46             uint32_t
+Line 51 --- out_word_47             uint32_t
+INPUTS_TAG
+Line 53 --- in_word_00              uint32_t
+Line 54 --- in_word_01              uint32_t
+Line 55 --- in_word_02              uint32_t
+Line 56 --- in_word_03              uint32_t
+Line 57 --- in_word_04              uint32_t
+Line 58 --- in_word_05              uint32_t
+Line 59 --- in_word_06              uint32_t
+Line 60 --- in_word_07              uint32_t
+Line 61 --- in_word_08              uint32_t
+Line 62 --- in_word_09              uint32_t
+Line 63 --- in_word_10              uint32_t
+Line 64 --- in_word_11              uint32_t
+Line 65 --- in_word_12              uint32_t
+Line 66 --- in_word_13              uint32_t
+Line 67 --- in_word_14              uint32_t
+Line 68 --- in_word_15              uint32_t
+Line 69 --- in_word_16              uint32_t
+Line 70 --- in_word_17              uint32_t
+Line 71 --- in_word_18              uint32_t
+Line 72 --- in_word_19              uint32_t
+Line 73 --- in_word_20              uint32_t
+Line 74 --- in_word_21              uint32_t
+Line 75 --- in_word_22              uint32_t
+Line 76 --- in_word_23              uint32_t
+Line 77 --- in_word_24              uint32_t
+Line 78 --- in_word_25              uint32_t
+Line 79 --- in_word_26              uint32_t
+Line 80 --- in_word_27              uint32_t
+Line 81 --- in_word_28              uint32_t
+Line 82 --- in_word_29              uint32_t
+Line 83 --- in_word_30              uint32_t
+Line 84 --- in_word_31              uint32_t
+Line 85 --- in_word_32              uint32_t
+Line 86 --- in_word_33              uint32_t
+Line 87 --- in_word_34              uint32_t
+Line 88 --- in_word_35              uint32_t
+Line 89 --- in_word_36              uint32_t
+Line 90 --- in_word_37              uint32_t
+Line 91 --- in_word_38              uint32_t
+Line 92 --- in_word_39              uint32_t
+Line 93 --- in_word_40              uint32_t
+Line 94 --- in_word_41              uint32_t
+Line 95 --- in_word_42              uint32_t
+Line 96 --- in_word_43              uint32_t
+Line 97 --- in_word_44              uint32_t
+Line 98 --- in_word_45              uint32_t
+Line 99 --- in_word_46              uint32_t
+Line 100 --- in_word_47              uint32_t
+INFO_TAG
+0x0000079A
+guajun
+0xABCDE010
+0x00000002
+ethercat_configurator_reference
+ethercat_configurator_reference
+END_TAG
+
+The ethercat_configurator_reference.prj configuration file is correct
+
+ByteNumOut 192
+ByteNumIn  192
+PdoNumOut  48
+PdoNumIn   48
+
+Creating the ethercat_configurator_reference.xml file
+
+PROJECT_TAG   ethercat_configurator_reference.prj
+VENDOID_TAG   0000079A
+VEN_NAM_TAG   guajun
+PRO_COD_TAG   ABCDE010
+REVISIO_TAG   00000002
+DEV_NAM_TAG   ethercat_configurator_reference
+DEV_NAM_TAG   ethercat_configurator_reference
+
+FIRST_TAG
+
+Output entries
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>1</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_00</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_01</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>3</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_02</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>4</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_03</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>5</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_04</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>6</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_05</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>7</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_06</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>8</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_07</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>9</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_08</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>10</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_09</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>11</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_10</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>12</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_11</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>13</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_12</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>14</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_13</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>15</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_14</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>16</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_15</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>17</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_16</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>18</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_17</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>19</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_18</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>20</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_19</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>21</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_20</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>22</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_21</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>23</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_22</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>24</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_23</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>25</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_24</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>26</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_25</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>27</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_26</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>28</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_27</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>29</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_28</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>30</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_29</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>31</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_30</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>32</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_31</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>33</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_32</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>34</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_33</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>35</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_34</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>36</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_35</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>37</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_36</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>38</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_37</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>39</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_38</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>40</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_39</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>41</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_40</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>42</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_41</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>43</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_42</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>44</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_43</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>45</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_44</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>46</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_45</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>47</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_46</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x5</Index>
+            <SubIndex>48</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>out_word_47</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+
+Input entries
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>1</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_00</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>2</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_01</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>3</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_02</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>4</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_03</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>5</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_04</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>6</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_05</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>7</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_06</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>8</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_07</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>9</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_08</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>10</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_09</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>11</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_10</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>12</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_11</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>13</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_12</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>14</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_13</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>15</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_14</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>16</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_15</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>17</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_16</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>18</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_17</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>19</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_18</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>20</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_19</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>21</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_20</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>22</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_21</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>23</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_22</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>24</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_23</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>25</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_24</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>26</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_25</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>27</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_26</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>28</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_27</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>29</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_28</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>30</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_29</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>31</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_30</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>32</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_31</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>33</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_32</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>34</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_33</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>35</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_34</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>36</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_35</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>37</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_36</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>38</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_37</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>39</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_38</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>40</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_39</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>41</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_40</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>42</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_41</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>43</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_42</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>44</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_43</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>45</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_44</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>46</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_45</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>47</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_46</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+          <Entry>
+            <Index>#x6</Index>
+            <SubIndex>48</SubIndex>
+            <BitLen>32</BitLen>
+            <Name>in_word_47</Name>
+            <DataType>UDINT</DataType>
+          </Entry>
+
+LAST_TAG
+
+The ethercat_configurator_reference.xml file has been created
+
+Creating the ethercat_configurator_reference.h file
+
+#define CUST_BYTE_NUM_OUT	192
+#define CUST_BYTE_NUM_IN	192
+#define TOT_BYTE_NUM_ROUND_OUT	192
+#define TOT_BYTE_NUM_ROUND_IN	192
+
+
+Output entries
+		uint32_t    out_word_00;
+		uint32_t    out_word_01;
+		uint32_t    out_word_02;
+		uint32_t    out_word_03;
+		uint32_t    out_word_04;
+		uint32_t    out_word_05;
+		uint32_t    out_word_06;
+		uint32_t    out_word_07;
+		uint32_t    out_word_08;
+		uint32_t    out_word_09;
+		uint32_t    out_word_10;
+		uint32_t    out_word_11;
+		uint32_t    out_word_12;
+		uint32_t    out_word_13;
+		uint32_t    out_word_14;
+		uint32_t    out_word_15;
+		uint32_t    out_word_16;
+		uint32_t    out_word_17;
+		uint32_t    out_word_18;
+		uint32_t    out_word_19;
+		uint32_t    out_word_20;
+		uint32_t    out_word_21;
+		uint32_t    out_word_22;
+		uint32_t    out_word_23;
+		uint32_t    out_word_24;
+		uint32_t    out_word_25;
+		uint32_t    out_word_26;
+		uint32_t    out_word_27;
+		uint32_t    out_word_28;
+		uint32_t    out_word_29;
+		uint32_t    out_word_30;
+		uint32_t    out_word_31;
+		uint32_t    out_word_32;
+		uint32_t    out_word_33;
+		uint32_t    out_word_34;
+		uint32_t    out_word_35;
+		uint32_t    out_word_36;
+		uint32_t    out_word_37;
+		uint32_t    out_word_38;
+		uint32_t    out_word_39;
+		uint32_t    out_word_40;
+		uint32_t    out_word_41;
+		uint32_t    out_word_42;
+		uint32_t    out_word_43;
+		uint32_t    out_word_44;
+		uint32_t    out_word_45;
+		uint32_t    out_word_46;
+		uint32_t    out_word_47;
+
+Input entries
+		uint32_t    in_word_00;
+		uint32_t    in_word_01;
+		uint32_t    in_word_02;
+		uint32_t    in_word_03;
+		uint32_t    in_word_04;
+		uint32_t    in_word_05;
+		uint32_t    in_word_06;
+		uint32_t    in_word_07;
+		uint32_t    in_word_08;
+		uint32_t    in_word_09;
+		uint32_t    in_word_10;
+		uint32_t    in_word_11;
+		uint32_t    in_word_12;
+		uint32_t    in_word_13;
+		uint32_t    in_word_14;
+		uint32_t    in_word_15;
+		uint32_t    in_word_16;
+		uint32_t    in_word_17;
+		uint32_t    in_word_18;
+		uint32_t    in_word_19;
+		uint32_t    in_word_20;
+		uint32_t    in_word_21;
+		uint32_t    in_word_22;
+		uint32_t    in_word_23;
+		uint32_t    in_word_24;
+		uint32_t    in_word_25;
+		uint32_t    in_word_26;
+		uint32_t    in_word_27;
+		uint32_t    in_word_28;
+		uint32_t    in_word_29;
+		uint32_t    in_word_30;
+		uint32_t    in_word_31;
+		uint32_t    in_word_32;
+		uint32_t    in_word_33;
+		uint32_t    in_word_34;
+		uint32_t    in_word_35;
+		uint32_t    in_word_36;
+		uint32_t    in_word_37;
+		uint32_t    in_word_38;
+		uint32_t    in_word_39;
+		uint32_t    in_word_40;
+		uint32_t    in_word_41;
+		uint32_t    in_word_42;
+		uint32_t    in_word_43;
+		uint32_t    in_word_44;
+		uint32_t    in_word_45;
+		uint32_t    in_word_46;
+		uint32_t    in_word_47;
+
+The ethercat_configurator_reference.h file has been created
+
+Creating the ethercat_configurator_reference.bin file
+
+
+The ethercat_configurator_reference.bin file has been created

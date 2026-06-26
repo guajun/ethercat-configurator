@@ -17,6 +17,19 @@ func TestLoadValidDevice(t *testing.T) {
 	if len(result.Device.ObjectDictionary) != 4 {
 		t.Fatalf("expected 4 OD entries, got %d", len(result.Device.ObjectDictionary))
 	}
+	if result.Device.ProcessData.RX.BufferMode != "single" || result.Device.ProcessData.TX.BufferMode != "single" {
+		t.Fatalf("expected default single buffer modes, got rx=%q tx=%q", result.Device.ProcessData.RX.BufferMode, result.Device.ProcessData.TX.BufferMode)
+	}
+}
+
+func TestLoadProcessDataBufferMode(t *testing.T) {
+	result := LoadFile("../../fixtures/easycat/easycat_safe_64/device.yaml")
+	if len(result.Diagnostics) != 0 {
+		t.Fatalf("expected no diagnostics, got %#v", result.Diagnostics)
+	}
+	if result.Device.ProcessData.RX.BufferMode != "triple" || result.Device.ProcessData.TX.BufferMode != "triple" {
+		t.Fatalf("expected explicit triple buffer modes, got rx=%q tx=%q", result.Device.ProcessData.RX.BufferMode, result.Device.ProcessData.TX.BufferMode)
+	}
 }
 
 func TestInvalidFixtureDiagnostics(t *testing.T) {

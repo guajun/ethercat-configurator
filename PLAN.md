@@ -2,6 +2,13 @@
 
 这份文件是项目路线图和 issue 索引。具体任务的 single truth 在 GitHub Issues；这里只保留阶段顺序、设计边界和执行约束，避免 `PLAN.md` 与 issue 双写后漂移。
 
+## 当前进度
+
+- PR [#19](https://github.com/guajun/ethercat-configurator/pull/19) 正在将 artifact generation 阶段从内部 round-trip 验证推进到 EasyCAT reference validation。
+- Issues [#7](https://github.com/guajun/ethercat-configurator/issues/7)、[#8](https://github.com/guajun/ethercat-configurator/issues/8)、[#9](https://github.com/guajun/ethercat-configurator/issues/9) 已 reopen，并更新为 PR #19 的当前目标。
+- 新增 issue [#18](https://github.com/guajun/ethercat-configurator/issues/18) 跟踪 firmware header 的 `__packed` switch；它不属于 PR #19 范围。
+- EasyCAT reference fixtures 采用一目录一套配对规则：`device.yaml`、`.prj`、`.xml`、`.bin`、`.h` 必须同目录维护，避免 device 与 EasyCAT project 漂移。
+
 ## 产品边界
 
 构建一个 CLI-first 的 EtherCAT SubDevice 配置生成器和校验器。
@@ -52,6 +59,7 @@
 - [#7](https://github.com/guajun/ethercat-configurator/issues/7) FEAT-006: Minimal ESI XML Generation
 - [#8](https://github.com/guajun/ethercat-configurator/issues/8) FEAT-007: SII EEPROM Binary Generation
 - [#9](https://github.com/guajun/ethercat-configurator/issues/9) FEAT-008: Firmware Header Generation
+- [#18](https://github.com/guajun/ethercat-configurator/issues/18) Follow-up: `__packed` switch for firmware header
 
 ### 5. Consistency and References
 
@@ -82,6 +90,7 @@
 | [#10](https://github.com/guajun/ethercat-configurator/issues/10) | FEAT-009: Diff and Artifact Consistency | Issue #10 |
 | [#11](https://github.com/guajun/ethercat-configurator/issues/11) | FEAT-010: Specs Index | Issue #11 |
 | [#12](https://github.com/guajun/ethercat-configurator/issues/12) | FEAT-011: Online Verification Adapter | Issue #12 |
+| [#18](https://github.com/guajun/ethercat-configurator/issues/18) | Follow-up: `__packed` switch for firmware header | Issue #18 |
 
 ## 初始仓库布局
 
@@ -108,9 +117,16 @@ examples/
 - `examples/lan9252-basic`: 最小可用 SubDevice，包含一个 RX PDO 和一个 TX PDO。
 - `fixtures/invalid`: 格式错误或语义非法的 YAML case。
 - `fixtures/pdo`: packed bits、byte-aligned entries、mixed-width integers 和 padding case。
-- `fixtures/pdi`: EasyCAT-style 默认地址溢出、RX/TX 重叠、非法 alignment 和显式地址覆盖 case。
+- `fixtures/pdi`: PDI 地址大小、alignment、range 和显式地址覆盖 case。
 - `fixtures/esi`: 生成的 XML golden files，以及 license 允许的导入 XML samples。
 - `fixtures/sii`: 生成的 binary golden files，以及故意破坏 checksum 的 case。
+- `fixtures/easycat`: EasyCAT oracle fixtures。每个子目录必须将 `device.yaml` 与同名 `.prj` 及其生成/修正后的 `.xml`、`.bin`、`.h` 放在一起。
+
+当前 EasyCAT oracle cases：
+
+- `fixtures/easycat/easycat_safe_64`: EasyCAT 默认 `0x1000`/`0x1200` 在 64-byte triple-buffer layout 下安全。
+- `fixtures/easycat/ethercat_configurator_reference`: 192-byte fixed reference，显式使用 `0x1000`/`0x1800` 避免 overlap；XML 和 binary 都必须体现 `0x1800`。
+- `fixtures/easycat/known_bad_overlap`: EasyCAT 默认 `0x1000`/`0x1200` 的 192-byte known-bad reference；生成器应输出明确 warning，但不直接拒绝产物生成。
 
 ## 命令面
 
@@ -167,7 +183,7 @@ Release assets：
 
 ## 下一步
 
-1. 添加 `go.mod` 和最小 CLI entry point。
-2. 定义第一版 `device.yaml` 形状和 JSON schema draft。
-3. 添加 `examples/lan9252-basic/device.yaml` 作为第一个 golden fixture。
-4. 在添加 generators 之前，先实现带 structured diagnostics 的 `validate`。
+1. Merge PR [#19](https://github.com/guajun/ethercat-configurator/pull/19) 到 `develop`，完成 EasyCAT reference validation 和 explicit buffer-mode warning 这一轮。
+2. 继续 [#10](https://github.com/guajun/ethercat-configurator/issues/10)，把声明式配置与导入/生成产物的 diff consistency 做成显式命令。
+3. 继续 [#11](https://github.com/guajun/ethercat-configurator/issues/11)，维护 specs index，但不 vendored 受限 ETG assets。
+4. 评估 [#18](https://github.com/guajun/ethercat-configurator/issues/18) 的 `__packed` switch，作为 firmware header 的独立后续小改动。

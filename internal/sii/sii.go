@@ -69,6 +69,7 @@ type ProcessDataRegion struct {
 	Address       string `json:"address"`
 	RequiredBytes uint32 `json:"required_bytes"`
 	BufferBytes   uint32 `json:"buffer_bytes"`
+	BufferMode    string `json:"buffer_mode"`
 }
 
 type category struct {
@@ -234,6 +235,7 @@ func pdiCategory(addressMap model.AddressMap) []byte {
 		_ = binary.Write(&output, binary.LittleEndian, region.Address)
 		_ = binary.Write(&output, binary.LittleEndian, region.RequiredBytes)
 		_ = binary.Write(&output, binary.LittleEndian, region.BufferBytes)
+		writeString(&output, string(region.BufferMode))
 	}
 	return output.Bytes()
 }
@@ -294,7 +296,7 @@ func applyCategory(summary *Summary, kind uint16, payload []byte) {
 			_ = binary.Read(reader, binary.LittleEndian, &address)
 			_ = binary.Read(reader, binary.LittleEndian, &requiredBytes)
 			_ = binary.Read(reader, binary.LittleEndian, &bufferBytes)
-			summary.ProcessData = append(summary.ProcessData, ProcessDataRegion{Direction: direction, Address: hex16(uint16(address)), RequiredBytes: requiredBytes, BufferBytes: bufferBytes})
+			summary.ProcessData = append(summary.ProcessData, ProcessDataRegion{Direction: direction, Address: hex16(uint16(address)), RequiredBytes: requiredBytes, BufferBytes: bufferBytes, BufferMode: readString(reader)})
 		}
 	}
 }

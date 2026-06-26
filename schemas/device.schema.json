@@ -47,7 +47,8 @@
       "additionalProperties": false,
       "properties": {
         "address": { "$ref": "#/$defs/u32" },
-        "size": { "type": "integer", "minimum": 0 }
+        "size": { "type": "integer", "minimum": 0 },
+        "buffer_mode": { "enum": ["single", "double", "triple"] }
       }
     },
     "objectEntry": {

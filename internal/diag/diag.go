@@ -9,23 +9,24 @@ import (
 )
 
 const (
-	CodeConfigParseError     = "CONFIG_PARSE_ERROR"
-	CodeODDuplicateIndex     = "OD_DUPLICATE_INDEX"
-	CodeODInvalidIndex       = "OD_INVALID_INDEX"
-	CodeODInvalidType        = "OD_INVALID_TYPE"
-	CodeODInvalidAccess      = "OD_INVALID_ACCESS"
-	CodePDOEntryNotFound     = "PDO_ENTRY_NOT_FOUND"
-	CodePDODuplicateMapping  = "PDO_DUPLICATE_MAPPING"
-	CodePDODirectionMismatch = "PDO_DIRECTION_MISMATCH"
-	CodePDOUnsupportedWidth  = "PDO_UNSUPPORTED_WIDTH"
-	CodePDOSizeOverflow      = "PDO_SIZE_OVERFLOW"
-	CodePDIAddressInvalid    = "PDI_ADDRESS_INVALID"
-	CodePDIRegionOverlap     = "PDI_REGION_OVERLAP"
-	CodePDIBufferTooSmall    = "PDI_BUFFER_TOO_SMALL"
-	CodePDILayoutOutOfRange  = "PDI_LAYOUT_OUT_OF_RANGE"
-	CodeESIParseError        = "ESI_PARSE_ERROR"
-	CodeSIIParseError        = "SII_PARSE_ERROR"
-	CodeSIIChecksumInvalid   = "SII_CHECKSUM_INVALID"
+	CodeConfigParseError      = "CONFIG_PARSE_ERROR"
+	CodeODDuplicateIndex      = "OD_DUPLICATE_INDEX"
+	CodeODInvalidIndex        = "OD_INVALID_INDEX"
+	CodeODInvalidType         = "OD_INVALID_TYPE"
+	CodeODInvalidAccess       = "OD_INVALID_ACCESS"
+	CodePDOEntryNotFound      = "PDO_ENTRY_NOT_FOUND"
+	CodePDODuplicateMapping   = "PDO_DUPLICATE_MAPPING"
+	CodePDODirectionMismatch  = "PDO_DIRECTION_MISMATCH"
+	CodePDOUnsupportedWidth   = "PDO_UNSUPPORTED_WIDTH"
+	CodePDOSizeOverflow       = "PDO_SIZE_OVERFLOW"
+	CodePDIAddressInvalid     = "PDI_ADDRESS_INVALID"
+	CodePDIRegionOverlap      = "PDI_REGION_OVERLAP"
+	CodePDISyncManagerOverlap = "PDI_SYNC_MANAGER_OVERLAP"
+	CodePDIBufferTooSmall     = "PDI_BUFFER_TOO_SMALL"
+	CodePDILayoutOutOfRange   = "PDI_LAYOUT_OUT_OF_RANGE"
+	CodeESIParseError         = "ESI_PARSE_ERROR"
+	CodeSIIParseError         = "SII_PARSE_ERROR"
+	CodeSIIChecksumInvalid    = "SII_CHECKSUM_INVALID"
 )
 
 type Severity string
@@ -54,6 +55,10 @@ type Result struct {
 
 func Error(code string, message string) Diagnostic {
 	return Diagnostic{Code: code, Severity: SeverityError, Message: message}
+}
+
+func Warning(code string, message string) Diagnostic {
+	return Diagnostic{Code: code, Severity: SeverityWarning, Message: message}
 }
 
 func RenderJSON(writer io.Writer, result Result) error {
