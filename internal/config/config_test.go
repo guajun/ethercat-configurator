@@ -23,7 +23,7 @@ func TestLoadValidDevice(t *testing.T) {
 }
 
 func TestLoadProcessDataBufferMode(t *testing.T) {
-	result := LoadFile("../../examples/easycat-safe-64/device.yaml")
+	result := LoadFile("../../fixtures/easycat/easycat_safe_64/device.yaml")
 	if len(result.Diagnostics) != 0 {
 		t.Fatalf("expected no diagnostics, got %#v", result.Diagnostics)
 	}

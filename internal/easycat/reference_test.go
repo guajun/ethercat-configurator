@@ -16,7 +16,7 @@ import (
 var referenceCases = []referenceCase{
 	{
 		name:            "easycat_safe_64",
-		devicePath:      "../../examples/easycat-safe-64/device.yaml",
+		devicePath:      "../../fixtures/easycat/easycat_safe_64/device.yaml",
 		xmlPath:         "../../fixtures/easycat/easycat_safe_64/easycat_safe_64.xml",
 		binPath:         "../../fixtures/easycat/easycat_safe_64/easycat_safe_64.bin",
 		wantRXAddress:   0x1000,
@@ -26,7 +26,7 @@ var referenceCases = []referenceCase{
 	},
 	{
 		name:            "easycat_fixed_192",
-		devicePath:      "../../examples/easycat-reference/device.yaml",
+		devicePath:      "../../fixtures/easycat/ethercat_configurator_reference/device.yaml",
 		xmlPath:         "../../fixtures/easycat/ethercat_configurator_reference/ethercat_configurator_reference.xml",
 		binPath:         "../../fixtures/easycat/ethercat_configurator_reference/ethercat_configurator_reference.bin",
 		wantRXAddress:   0x1000,

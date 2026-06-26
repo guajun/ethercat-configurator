@@ -11,10 +11,11 @@ input SM:  0x1200
 
 Workflow:
 
-1. Open `F:\ethercat2peripheral\ethercat-peripheral-board\protocol\EasyCAT\easycat_safe_64\easycat_safe_64.prj` in EasyCAT Configurator.
-2. Generate `.xml`, `.bin`, and `.h`.
-3. Copy the generated files here as:
+1. Keep `device.yaml` paired with `easycat_safe_64.prj` in this directory.
+2. Open `F:\ethercat2peripheral\ethercat-peripheral-board\protocol\EasyCAT\easycat_safe_64\easycat_safe_64.prj` in EasyCAT Configurator.
+3. Generate `.xml`, `.bin`, and `.h`.
+4. Copy the generated files here as:
    - `easycat_safe_64.xml`
    - `easycat_safe_64.bin`
    - `easycat_safe_64.h`
-4. Run `go test ./...`.
+5. Run `go test ./...`.

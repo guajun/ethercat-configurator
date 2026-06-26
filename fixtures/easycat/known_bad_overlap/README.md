@@ -1,6 +1,6 @@
 # EasyCAT known-bad overlap fixture
 
-This directory stores the 192-byte EasyCAT project and generated artifacts that keep EasyCAT's default input SyncManager address `0x1200`.
+This directory stores the paired `device.yaml`, 192-byte EasyCAT project, and generated artifacts that keep EasyCAT's default input SyncManager address `0x1200`.
 
 EasyCAT writes generated artifacts by keeping the project basename and changing only the suffix:
 

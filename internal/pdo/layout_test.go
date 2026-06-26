@@ -96,7 +96,7 @@ func TestSyncManagerThreeBufferOverlap(t *testing.T) {
 }
 
 func TestSyncManagerThreeBufferAllowsSmallDefaultGap(t *testing.T) {
-	loadResult := config.LoadFile("../../examples/easycat-safe-64/device.yaml")
+	loadResult := config.LoadFile("../../fixtures/easycat/easycat_safe_64/device.yaml")
 	layout, diagnostics := BuildLayout(loadResult.Device)
 	if len(diagnostics) != 0 {
 		t.Fatalf("expected no layout diagnostics, got %#v", diagnostics)
