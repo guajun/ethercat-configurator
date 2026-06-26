@@ -23,6 +23,16 @@ func TestGenerateHeaderFixture(t *testing.T) {
 	if err != nil {
 		t.Fatalf("expected nil error, got %v", err)
 	}
+	_, warnings, err := GenerateHeaderWithWarnings(loadResult.Device, layout, addressMap)
+	if err != nil {
+		t.Fatalf("expected nil error, got %v", err)
+	}
+	if len(warnings) != 4 {
+		t.Fatalf("expected bit-level and reserved tail warnings for RX/TX, got %#v", warnings)
+	}
+	if !hasHeaderWarning(warnings, "OUT", "enable_output") || !hasHeaderWarning(warnings, "OUT", "reserved_tail") || !hasHeaderWarning(warnings, "IN", "input_ready") || !hasHeaderWarning(warnings, "IN", "reserved_tail") {
+		t.Fatalf("expected RX/TX bit-level and reserved tail warnings, got %#v", warnings)
+	}
 	text := string(data)
 	golden, err := os.ReadFile("../../fixtures/firmware/ethercat_device.h")
 	if err != nil {
@@ -50,6 +60,15 @@ func TestGenerateHeaderFixture(t *testing.T) {
 			t.Fatalf("expected EasyCAT-style header to omit %q, got %q", forbidden, text)
 		}
 	}
+}
+
+func hasHeaderWarning(warnings []HeaderWarning, direction string, field string) bool {
+	for _, warning := range warnings {
+		if warning.Direction == direction && warning.Field == field {
+			return true
+		}
+	}
+	return false
 }
 
 func normalizeNewlines(value string) string {

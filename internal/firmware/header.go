@@ -4,6 +4,7 @@ import (
 	"bytes"
 	"fmt"
 	"regexp"
+	"sort"
 	"strings"
 
 	"github.com/guajun/ethercat-configurator/internal/model"
@@ -11,17 +12,29 @@ import (
 
 var identifierPattern = regexp.MustCompile(`[^A-Z0-9]+`)
 
+type HeaderWarning struct {
+	Direction string
+	Field     string
+	Offset    uint32
+	Bytes     uint32
+	Message   string
+}
+
 func GenerateHeader(device model.Device, layout model.Layout, addressMap model.AddressMap) ([]byte, error) {
+	data, _, err := GenerateHeaderWithWarnings(device, layout, addressMap)
+	return data, err
+}
+
+func GenerateHeaderWithWarnings(device model.Device, layout model.Layout, addressMap model.AddressMap) ([]byte, []HeaderWarning, error) {
 	prefix := macroPrefix(device.Identity.Name)
 	var output bytes.Buffer
 	fmt.Fprintf(&output, "#ifndef %s_ETHERCAT_DEVICE_H\n", prefix)
 	fmt.Fprintf(&output, "#define %s_ETHERCAT_DEVICE_H\n\n", prefix)
 	output.WriteString("#include <stdint.h>\n\n")
 	writeProcessDataSizes(&output, layout)
-	writeEasyCATBuffer(&output, "OUT", layout.RX)
-	writeEasyCATBuffer(&output, "IN", layout.TX)
+	warnings := append(writeEasyCATBuffer(&output, "OUT", layout.RX), writeEasyCATBuffer(&output, "IN", layout.TX)...)
 	fmt.Fprintf(&output, "#endif /* %s_ETHERCAT_DEVICE_H */\n", prefix)
-	return output.Bytes(), nil
+	return output.Bytes(), warnings, nil
 }
 
 func writeProcessDataSizes(output *bytes.Buffer, layout model.Layout) {
@@ -31,10 +44,11 @@ func writeProcessDataSizes(output *bytes.Buffer, layout model.Layout) {
 	fmt.Fprintf(output, "#define TOT_BYTE_NUM_ROUND_IN\t%d\n\n\n", layout.TX.ByteLength)
 }
 
-func writeEasyCATBuffer(output *bytes.Buffer, direction string, layout model.LayoutDirection) {
+func writeEasyCATBuffer(output *bytes.Buffer, direction string, layout model.LayoutDirection) []HeaderWarning {
 	fmt.Fprintf(output, "typedef union\n{\n")
 	fmt.Fprintf(output, "\tuint8_t Byte[TOT_BYTE_NUM_ROUND_%s];\n", direction)
 	fmt.Fprintf(output, "\tstruct\n\t{\n")
+	warnings := headerWarnings(direction, layout)
 	byteCursor := uint32(0)
 	for entryIndex, entry := range layout.Entries {
 		if entry.BitOffset%8 != 0 || entry.BitLength%8 != 0 {
@@ -55,6 +69,30 @@ func writeEasyCATBuffer(output *bytes.Buffer, direction string, layout model.Lay
 	}
 	fmt.Fprintf(output, "\t} Cust;\n")
 	fmt.Fprintf(output, "} PROCBUFFER_%s;\n\n\n", direction)
+	return warnings
+}
+
+func headerWarnings(direction string, layout model.LayoutDirection) []HeaderWarning {
+	entries := append([]model.LayoutEntry(nil), layout.Entries...)
+	sort.SliceStable(entries, func(leftIndex int, rightIndex int) bool {
+		return entries[leftIndex].BitOffset < entries[rightIndex].BitOffset
+	})
+	var warnings []HeaderWarning
+	byteCursor := uint32(0)
+	for entryIndex, entry := range entries {
+		if entry.BitOffset%8 != 0 || entry.BitLength%8 != 0 {
+			warnings = append(warnings, HeaderWarning{Direction: direction, Field: fieldName(entry.Name), Offset: entry.BitOffset / 8, Bytes: entry.ByteLength, Message: fmt.Sprintf("%s field %s uses bit-level layout and is omitted from EasyCAT-style struct; access it through Byte[]", direction, fieldName(entry.Name))})
+			continue
+		}
+		if entry.ByteOffset > byteCursor {
+			warnings = append(warnings, HeaderWarning{Direction: direction, Field: fmt.Sprintf("reserved_%02d", entryIndex), Offset: byteCursor, Bytes: entry.ByteOffset - byteCursor, Message: fmt.Sprintf("%s process data has %d reserved byte(s) before %s; struct fields are not contiguous", direction, entry.ByteOffset-byteCursor, fieldName(entry.Name))})
+		}
+		byteCursor = entry.ByteOffset + entry.ByteLength
+	}
+	if layout.ByteLength > byteCursor {
+		warnings = append(warnings, HeaderWarning{Direction: direction, Field: "reserved_tail", Offset: byteCursor, Bytes: layout.ByteLength - byteCursor, Message: fmt.Sprintf("%s process data has %d trailing reserved byte(s); generated struct does not cover the full buffer with named fields", direction, layout.ByteLength-byteCursor)})
+	}
+	return warnings
 }
 
 func cType(modelType string) string {

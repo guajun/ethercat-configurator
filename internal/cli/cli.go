@@ -270,7 +270,7 @@ func runGenHeader(args []string, options runOptions, stdout io.Writer) *cliError
 	if len(diagnostics) > 0 {
 		return &cliError{exitCode: ExitValidationError, diagnostic: diagnostics[0], diagnostics: diagnostics}
 	}
-	data, generateErr := firmware.GenerateHeader(device, layout, addressMap)
+	data, warnings, generateErr := firmware.GenerateHeaderWithWarnings(device, layout, addressMap)
 	if generateErr != nil {
 		return internalError("ECONFIG_INTERNAL_HEADER_GENERATE", generateErr.Error())
 	}
@@ -279,8 +279,15 @@ func runGenHeader(args []string, options runOptions, stdout io.Writer) *cliError
 	}
 	if !options.Quiet {
 		writeResult(stdout, options, "gen header", target)
+		writeHeaderWarnings(stdout, warnings)
 	}
 	return nil
+}
+
+func writeHeaderWarnings(stdout io.Writer, warnings []firmware.HeaderWarning) {
+	for _, warning := range warnings {
+		fmt.Fprintf(stdout, "warning: %s\n", warning.Message)
+	}
 }
 
 func runInspectESI(args []string, options runOptions, stdout io.Writer) *cliError {

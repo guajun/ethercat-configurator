@@ -4,6 +4,31 @@ A lightweight, CLI-first EtherCAT SubDevice configuration generator and verifier
 
 The goal is to make EtherCAT SubDevice configuration reproducible, reviewable, and friendly to CI and agent workflows. A single declarative device file should become the source of truth for ESI XML, SII EEPROM binaries, firmware headers, and layout reports.
 
+## Get Started
+
+```bash
+ethercat-configurator --help
+ethercat-configurator validate device.yaml
+ethercat-configurator validate --help
+ethercat-configurator report device.yaml -o report.md
+ethercat-configurator gen esi device.yaml -o device.xml
+ethercat-configurator gen esi --help
+ethercat-configurator gen sii device.yaml -o eeprom.bin
+ethercat-configurator gen header device.yaml -o ethercat_device.h
+ethercat-configurator inspect esi device.xml
+ethercat-configurator inspect sii eeprom.bin
+ethercat-configurator diff expected.yaml actual.xml
+```
+
+Generated artifacts are deterministic and come from the same canonical model:
+
+- `gen esi` writes a minimal ESI XML file with identity, Object Dictionary, PDO mappings, process data addresses, and Sync Manager metadata.
+- `gen sii` writes a stable EEPROM binary container with identity, strings, Object Dictionary, PDO mappings, process data addresses, and checksum validation.
+- `gen header` writes an EasyCAT-style C/C++ header with OUT/IN process buffer unions derived from the PDO layout.
+- `inspect esi` and `inspect sii` print normalized summaries; pass `--json` for machine-readable output.
+
+When `gen header` emits fields such as `reserved_tail`, the CLI prints a warning. These warnings mean the EasyCAT-style struct has reserved bytes or omitted bit-level fields, so the named struct fields do not cover the process data buffer contiguously. Firmware can still use the generated `Byte[]` view for the complete buffer.
+
 ## Why This Project
 
 EtherCAT configuration often crosses several artifacts at once: Object Dictionary entries, PDO mapping, Sync Manager sizes, ESI XML, EEPROM content, firmware offsets, and master-side expectations. In many small-device workflows those details are hidden in GUI projects, generated code, or handwritten offset tables.
@@ -30,29 +55,6 @@ This project is not intended to replace existing EtherCAT runtime stacks or engi
 | PySOEM | Python scripting around SOEM | Useful prototype/reference for validation workflows |
 | IgH EtherCAT Master | Mature Linux master and diagnostics | Linux validation reference and CLI inspiration |
 | ET9000 / TwinCAT / vendor tools | Compatibility, import, commissioning, and production engineering | Generated artifacts should remain importable, but daily generation should not depend on GUI-only workflows |
-
-## CLI
-
-```bash
-ethercat-configurator --help
-ethercat-configurator validate device.yaml
-ethercat-configurator validate --help
-ethercat-configurator report device.yaml -o report.md
-ethercat-configurator gen esi device.yaml -o device.xml
-ethercat-configurator gen esi --help
-ethercat-configurator gen sii device.yaml -o eeprom.bin
-ethercat-configurator gen header device.yaml -o ethercat_device.h
-ethercat-configurator inspect esi device.xml
-ethercat-configurator inspect sii eeprom.bin
-ethercat-configurator diff expected.yaml actual.xml
-```
-
-Generated artifacts are deterministic and come from the same canonical model:
-
-- `gen esi` writes a minimal ESI XML file with identity, Object Dictionary, PDO mappings, process data addresses, and Sync Manager metadata.
-- `gen sii` writes a stable EEPROM binary container with identity, strings, Object Dictionary, PDO mappings, process data addresses, and checksum validation.
-- `gen header` writes an EasyCAT-style C/C++ header with OUT/IN process buffer unions derived from the PDO layout.
-- `inspect esi` and `inspect sii` print normalized summaries; pass `--json` for machine-readable output.
 
 ## Process Data Buffer Mode
 

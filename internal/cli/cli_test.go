@@ -257,6 +257,9 @@ func TestGenCommandsWriteArtifacts(t *testing.T) {
 			if !strings.Contains(stdout.String(), "gen "+test.artifact+" "+devicePath+": ok") {
 				t.Fatalf("expected success output, got %q", stdout.String())
 			}
+			if test.artifact == "header" && !strings.Contains(stdout.String(), "warning: OUT process data has 1 trailing reserved byte(s)") {
+				t.Fatalf("expected header generation warning for reserved tail, got %q", stdout.String())
+			}
 			if stderr.Len() != 0 {
 				t.Fatalf("expected empty stderr, got %q", stderr.String())
 			}
